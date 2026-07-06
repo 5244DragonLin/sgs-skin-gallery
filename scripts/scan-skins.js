@@ -23,13 +23,16 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { loadConfig, getSkinDir, getHerosDir } from './load-config.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 
 // ============================================================
-// Configuration
+// Configuration — from gallery.config.yaml
 // ============================================================
+
+const config = loadConfig();
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -45,25 +48,11 @@ function parseArgs() {
 }
 
 const cliArgs = parseArgs();
-const SKIN_ROOT = cliArgs.skinDir || process.env.SKINS_DIR || 'E:/BaiduSyncdisk/其他/三国杀皮肤/BWIKI';
-const OUTPUT_PATH = cliArgs.output || path.join(PROJECT_ROOT, 'public', 'skin-data.json');
-const PACK_DATA_PATH = path.join(PROJECT_ROOT, 'public', 'pack-data.json');
-
-/** 武将详细数据目录 — 自动检测 */
-function findHerosDir() {
-  const candidates = [
-    'E:/BaiduSyncdisk/其他/三国杀皮肤/heros',
-    'D:/BaiduSyncdisk/其他/三国杀皮肤/heros',
-    path.resolve(SKIN_ROOT, '../heros'),
-  ];
-  for (const dir of candidates) {
-    if (fs.existsSync(path.join(dir, 'characters.json'))) {
-      return dir;
-    }
-  }
-  return 'E:/BaiduSyncdisk/其他/三国杀皮肤/heros';
-}
-const HEROS_DIR = findHerosDir();
+const SKIN_ROOT = cliArgs.skinDir || getSkinDir();
+const outputDir = path.join(PROJECT_ROOT, config.outputDir || 'public');
+const OUTPUT_PATH = cliArgs.output || path.join(outputDir, 'skin-data.json');
+const PACK_DATA_PATH = path.join(outputDir, 'pack-data.json');
+const HEROS_DIR = getHerosDir(SKIN_ROOT);
 
 const FACTION_ORDER = ['魏', '蜀', '吴', '群', '神', '未知'];
 

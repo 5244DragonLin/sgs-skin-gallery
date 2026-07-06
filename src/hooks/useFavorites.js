@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 const STORAGE_KEY = 'sgs-gallery-favorites';
 
@@ -40,6 +40,10 @@ export default function useFavorites() {
     return `${generalId}::${skinId}`;
   }, []);
 
+  // Keep a ref to the latest favorites for stable isFavorite callback
+  const favoritesRef = useRef(favorites);
+  favoritesRef.current = favorites;
+
   /**
    * Toggle a skin's favorite status.
    */
@@ -57,11 +61,11 @@ export default function useFavorites() {
   }, [makeKey]);
 
   /**
-   * Check if a skin is favorited.
+   * Check if a skin is favorited. Stable reference — always reads latest favorites via ref.
    */
   const isFavorite = useCallback((generalId, skinId) => {
-    return favorites.has(makeKey(generalId, skinId));
-  }, [favorites, makeKey]);
+    return favoritesRef.current.has(makeKey(generalId, skinId));
+  }, [makeKey]);
 
   /**
    * Clear all favorites.

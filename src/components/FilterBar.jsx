@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 
 const FACTIONS = [
   { id: 'all', label: '全部', colorClass: '' },
@@ -47,8 +47,33 @@ export default function FilterBar({
   activeCollection = 'all',
   onCollectionChange,
   collections = [],
+  activeHallOfFame = 'all',
+  onHallOfFameChange,
+  hallOfFameNames = [],
 }) {
   const [expandedCategory, setExpandedCategory] = useState(null);
+  const [inputValue, setInputValue] = useState(searchQuery);
+  const debounceRef = useRef(null);
+
+  // Sync external searchQuery changes (e.g. clear) back to local input
+  useEffect(() => {
+    setInputValue(searchQuery);
+  }, [searchQuery]);
+
+  const handleSearchInput = useCallback((value) => {
+    setInputValue(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      onSearchChange(value);
+    }, 300);
+  }, [onSearchChange]);
+
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
 
   const currentExpanded = activePackCategory !== 'all' ? activePackCategory : expandedCategory;
 
@@ -84,8 +109,8 @@ export default function FilterBar({
           <div className="relative">
             <input
               type="text"
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
+              value={inputValue}
+              onChange={(e) => handleSearchInput(e.target.value)}
               placeholder="搜索武将名..."
               className="w-full md:w-72 px-4 py-2.5 pl-10 bg-antique-bg border border-antique-border/50
                 rounded-lg text-antique-text placeholder-antique-muted
@@ -99,9 +124,9 @@ export default function FilterBar({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            {searchQuery && (
+            {inputValue && (
               <button
-                onClick={() => onSearchChange('')}
+                onClick={() => handleSearchInput('')}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-antique-muted
                   hover:text-antique-gold transition-colors"
               >
@@ -216,7 +241,9 @@ export default function FilterBar({
                   ? q.id === 'all'
                     ? 'bg-antique-gold/20 border-antique-gold text-antique-gold'
                     : `${q.colorClass} border-current`
-                  : 'border-transparent text-antique-muted hover:text-antique-text hover:bg-antique-bg/50'
+                  : q.id === 'all'
+                    ? 'border-transparent text-antique-muted hover:text-antique-text hover:bg-antique-bg/50'
+                    : `${q.colorClass} border-transparent hover:border-current`
                 }
               `}
             >
@@ -225,29 +252,24 @@ export default function FilterBar({
           ))}
         </div>
 
-        {/* Row 4: Gender + Result Count */}
+        {/* Row 4: Gender */}
         <div className="flex flex-wrap items-center gap-1.5 mb-3">
           <span className="text-antique-muted text-xs tracking-wider mr-2">性别</span>
           {GENDERS.map((g) => (
             <button
               key={g.id}
               onClick={() => onGenderChange(g.id)}
-              className={`
-                px-3 py-1.5 rounded-md text-sm font-classical
-                border transition-all duration-300
-                ${activeGender === g.id
+              className={[
+                'px-3 py-1.5 rounded-md text-sm font-classical',
+                'border transition-all duration-300',
+                activeGender === g.id
                   ? 'bg-antique-gold/20 border-antique-gold text-antique-gold'
-                  : 'border-transparent text-antique-muted hover:text-antique-text hover:bg-antique-bg/50'
-                }
-              `}
+                  : 'border-transparent text-antique-muted hover:text-antique-text hover:bg-antique-bg/50',
+              ].join(' ')}
             >
               {g.label}
             </button>
           ))}
-
-          <div className="ml-auto text-antique-muted text-sm">
-            共 <span className="text-antique-gold font-semibold">{resultCount}</span> 个皮肤
-          </div>
         </div>
 
         {/* Row 5: Collection — separate row, button + dropdown pattern */}
@@ -256,7 +278,26 @@ export default function FilterBar({
             activeCollection={activeCollection}
             onCollectionChange={onCollectionChange}
             collections={collections}
+            resultCount={hallOfFameNames.length > 0 ? undefined : resultCount}
           />
+        )}
+
+        {/* Row 6: Hall of Fame — same pattern */}
+        {hallOfFameNames.length > 0 && (
+          <HallOfFameFilter
+            activeHallOfFame={activeHallOfFame}
+            onHallOfFameChange={onHallOfFameChange}
+            hallOfFameNames={hallOfFameNames}
+            resultCount={resultCount}
+          />
+        )}
+
+        {collections.length === 0 && hallOfFameNames.length === 0 && (
+          <div className="flex justify-end">
+            <div className="text-antique-muted text-sm">
+              共 <span className="text-antique-gold font-semibold">{resultCount}</span> 个皮肤
+            </div>
+          </div>
         )}
       </div>
     </div>
@@ -267,7 +308,7 @@ export default function FilterBar({
  * CollectionFilter — "全部" button + click-to-show dropdown list.
  * Matches the visual style of faction/pack category buttons.
  */
-function CollectionFilter({ activeCollection, onCollectionChange, collections }) {
+function CollectionFilter({ activeCollection, onCollectionChange, collections, resultCount }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -287,7 +328,7 @@ function CollectionFilter({ activeCollection, onCollectionChange, collections })
   const activeLabel = isAll ? '选择收藏册' : (activeCollection.length > 12 ? activeCollection.slice(0, 12) + '…' : activeCollection);
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5" ref={ref}>
+    <div className="flex flex-wrap items-center gap-1.5 mb-3" ref={ref}>
       <span className="text-antique-muted text-xs tracking-wider mr-2">收藏册</span>
       {/* "全部" button */}
       <button
@@ -335,6 +376,87 @@ function CollectionFilter({ activeCollection, onCollectionChange, collections })
             ))}
           </div>
         )}
+        {resultCount !== undefined && (
+          <div className="ml-auto text-antique-muted text-sm whitespace-nowrap">
+            共 <span className="text-antique-gold font-semibold">{resultCount}</span> 个皮肤
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * HallOfFameFilter — "全部" button + click-to-show dropdown list.
+ * Same visual pattern as CollectionFilter.
+ */
+function HallOfFameFilter({ activeHallOfFame, onHallOfFameChange, hallOfFameNames, resultCount }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [open]);
+
+  const isAll = activeHallOfFame === 'all';
+  const activeLabel = isAll ? '选择名将堂' : (activeHallOfFame.length > 12 ? activeHallOfFame.slice(0, 12) + '…' : activeHallOfFame);
+
+  return (
+    <div className="flex flex-wrap items-center gap-1.5 mb-3" ref={ref}>
+      <span className="text-antique-muted text-xs tracking-wider mr-2">名将堂</span>
+      <button
+        onClick={() => { onHallOfFameChange('all'); setOpen(false); }}
+        className={`px-3 py-1.5 rounded-md text-sm font-classical border transition-all duration-300
+          ${isAll
+            ? 'bg-antique-gold/20 border-antique-gold text-antique-gold'
+            : 'border-transparent text-antique-muted hover:text-antique-text hover:bg-antique-bg/50'
+          }`}
+      >
+        全部
+      </button>
+      <div className="relative">
+        <button
+          onClick={() => setOpen(!open)}
+          className={`px-3 py-1.5 rounded-md text-sm font-classical border transition-all duration-300 flex items-center gap-1
+            ${!isAll
+              ? 'bg-antique-gold/20 border-antique-gold text-antique-gold'
+              : 'border-transparent text-antique-muted hover:text-antique-text hover:bg-antique-bg/50'
+            }`}
+        >
+          {activeLabel}
+          <svg className={`w-3 h-3 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        {open && (
+          <div className="absolute top-full left-0 mt-1 z-20 bg-antique-card border border-antique-border/60 rounded-lg shadow-xl
+            min-w-[11rem] max-h-[15rem] overflow-y-auto py-1"
+            style={{ animation: 'fadeIn 0.15s ease-out both' }}>
+            {hallOfFameNames.map((name) => (
+              <button
+                key={name}
+                onClick={() => { onHallOfFameChange(name); setOpen(false); }}
+                className={`w-full text-left px-3 py-1.5 text-sm font-classical transition-colors
+                  ${activeHallOfFame === name
+                    ? 'bg-antique-gold/15 text-antique-gold'
+                    : 'text-antique-text hover:bg-antique-bg/50 hover:text-antique-cream'
+                  }`}
+              >
+                {name}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="ml-auto text-antique-muted text-sm whitespace-nowrap">
+        共 <span className="text-antique-gold font-semibold">{resultCount}</span> 个皮肤
       </div>
     </div>
   );

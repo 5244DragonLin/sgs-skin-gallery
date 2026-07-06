@@ -17,6 +17,7 @@ import useFavorites from './hooks/useFavorites';
 export default function App() {
   // Data
   const [data, setData] = useState(null);
+  const [fullData, setFullData] = useState(null); // lazily loaded full skin-data.json for detail
   const [packData, setPackData] = useState(null);
   const [genderMap, setGenderMap] = useState({});
   const [viewState, setViewState] = useState('loading'); // 'loading' | 'gallery' | 'detail'
@@ -33,10 +34,11 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
-  // New filters: pack category, pack, collection
+  // New filters: pack category, pack, collection, hallOfFame
   const [activePackCategory, setActivePackCategory] = useState('all');
   const [activePack, setActivePack] = useState('all');
   const [activeCollection, setActiveCollection] = useState('all');
+  const [activeHallOfFame, setActiveHallOfFame] = useState('all');
 
   // Favorites
   const { toggleFavorite, isFavorite } = useFavorites();
@@ -47,10 +49,10 @@ export default function App() {
 
     async function loadData() {
       try {
-        // Load skins data
-        const skinsRes = await fetch('/skin-data.json');
+        // Load light skins data (fast — only metadata, no stories/quotes)
+        const skinsRes = await fetch('/skin-list.json');
         if (!skinsRes.ok) {
-          throw new Error(`skin-data.json 加载失败 (HTTP ${skinsRes.status})。请先运行: npm run scan`);
+          throw new Error(`skin-list.json 加载失败 (HTTP ${skinsRes.status})。请先运行: npm run scan`);
         }
         const skinsData = await skinsRes.json();
         if (cancelled) return;
@@ -81,6 +83,12 @@ export default function App() {
           setData(skinsData);
           setPackData(packDataResult);
           setGenderMap(genderData);
+          // Preload full skin-data.json in the background so detail view has no flicker
+          fetch('/skin-data.json').then(r => {
+            if (r.ok) return r.json();
+          }).then(full => {
+            if (full && !cancelled) setFullData(full);
+          }).catch(() => {});
           setViewState('gallery');
         }
       } catch (err) {
@@ -103,6 +111,23 @@ export default function App() {
       for (const s of g.skins) {
         if (s.collection && s.collection !== '不在收藏册内' && s.collection !== 'null') {
           set.add(s.collection);
+        }
+      }
+    }
+    return [...set].sort((a, b) => a.localeCompare(b, 'zh'));
+  }, [data]);
+
+  // Build hallOfFame list from all generals
+  const hallOfFameNames = useMemo(() => {
+    if (!data || !data.generals) return [];
+    const set = new Set();
+    for (const g of data.generals) {
+      const hof = g.hallOfFame;
+      if (hof && hof !== '不在内' && hof !== '') {
+        // Split on '、' for multi-value fields
+        const parts = hof.split('、').map(s => s.trim());
+        for (const p of parts) {
+          if (p) set.add(p);
         }
       }
     }
@@ -137,6 +162,16 @@ export default function App() {
       );
     }
 
+    // Hall of Fame filter（名将堂）
+    if (activeHallOfFame !== 'all') {
+      generals = generals.filter((g) => {
+        const hof = g.hallOfFame;
+        if (!hof || hof === '不在内' || hof === '') return false;
+        const parts = hof.split('、').map(s => s.trim());
+        return parts.includes(activeHallOfFame);
+      });
+    }
+
     // Gender filter
     if (activeGender !== 'all') {
       const targetGender = activeGender === 'male' ? '男' : '女';
@@ -169,7 +204,7 @@ export default function App() {
     }
 
     return generals;
-  }, [data, activeFaction, activePackCategory, activePack, activeCollection, activeGender, activeQuality, searchQuery, genderMap]);
+  }, [data, activeFaction, activePackCategory, activePack, activeCollection, activeHallOfFame, activeGender, activeQuality, searchQuery, genderMap]);
 
   // Count total visible skins
   const visibleSkinCount = useMemo(() => {
@@ -190,7 +225,15 @@ export default function App() {
     setSelectedGeneral(general);
     setSelectedSkin(skin);
     setViewState('detail');
-  }, []);
+
+    // Preload full data in the background
+    if (!fullData) {
+      fetch('/skin-data.json')
+        .then(r => r.ok ? r.json() : null)
+        .then(full => { if (full) setFullData(full); })
+        .catch(err => console.warn('Full data lazy load failed:', err));
+    }
+  }, [fullData]);
 
   const handleCloseDetail = useCallback(() => {
     setViewState('gallery');
@@ -292,6 +335,9 @@ export default function App() {
         activeCollection={activeCollection}
         onCollectionChange={setActiveCollection}
         collections={collections}
+        activeHallOfFame={activeHallOfFame}
+        onHallOfFameChange={setActiveHallOfFame}
+        hallOfFameNames={hallOfFameNames}
       />
 
       <SkinGrid
@@ -309,6 +355,7 @@ export default function App() {
         <SkinDetail
           general={selectedGeneral}
           skin={selectedSkin}
+          fullData={fullData}
           onClose={handleCloseDetail}
           isFavorite={isFavorite(selectedGeneral.id, selectedSkin.id)}
           onToggleFavorite={handleToggleFavorite}

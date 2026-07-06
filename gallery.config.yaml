@@ -1,0 +1,14 @@
+# 三国杀皮肤画廊配置文件
+# 修改后重启 npm run dev 即可生效
+
+# 皮肤素材目录（BWIKI 数据源）
+skinDir: 'D:/BaiduSyncdisk/其他/三国杀皮肤/BWIKI'
+
+# 武将数据目录（可选，不配置则自动检测）
+herosDir: null
+
+# 开发服务器端口
+port: 3000
+
+# 扫描输出目录（相对于项目根目录）
+outputDir: public

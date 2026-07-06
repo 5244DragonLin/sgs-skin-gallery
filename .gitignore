@@ -1,5 +1,7 @@
 node_modules/
 dist/
 public/skin-data.json
+public/skin-list.json
+public/fonts/
 *.log
 .DS_Store

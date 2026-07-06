@@ -1,11 +1,60 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import VoicePlayer from './VoicePlayer';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import CollectionBadge from './CollectionBadge';
+
+/**
+ * SkillVoiceButton — small play button next to a skill name.
+ * Plays the first available audio file for that skill.
+ */
+function SkillVoiceButton({ files, label }) {
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  const handleClick = useCallback((e) => {
+    e.stopPropagation();
+    if (playing) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+      setPlaying(false);
+      return;
+    }
+
+    const file = files[0];
+    if (!file) return;
+
+    const src = file.startsWith('http://') || file.startsWith('https://')
+      ? file
+      : `/skins/${file}`;
+
+    const audio = new Audio(src);
+    audioRef.current = audio;
+    audio.addEventListener('ended', () => setPlaying(false));
+    audio.addEventListener('error', () => setPlaying(false));
+    audio.play().catch(() => setPlaying(false));
+    setPlaying(true);
+  }, [files, playing]);
+
+  return (
+    <button
+      onClick={handleClick}
+      className={`inline-flex items-center justify-center w-5 h-5 rounded text-xs flex-shrink-0
+        transition-all duration-200
+        ${playing
+          ? 'bg-antique-gold/20 text-antique-gold'
+          : 'bg-antique-gold/5 text-antique-gold/40 hover:bg-antique-gold/15 hover:text-antique-gold/70'
+        }`}
+      title={playing ? `停止 ${label}` : `播放 ${label}`}
+    >
+      <span className="scale-[0.6] inline-block">{playing ? '🔊' : '🔈'}</span>
+    </button>
+  );
+}
 
 const FACTION_GRADIENT = {
   '魏': 'from-blue-950/90 via-blue-950/40',
-  '蜀': 'from-green-950/90 via-green-950/40',
-  '吴': 'from-red-950/90 via-red-950/40',
+  '蜀': 'from-red-950/90 via-red-950/40',
+  '吴': 'from-green-950/90 via-green-950/40',
   '群': 'from-gray-900/90 via-gray-900/40',
   '神': 'from-yellow-950/90 via-yellow-950/40',
   '未知': 'from-gray-950/90 via-gray-950/40',
@@ -13,8 +62,8 @@ const FACTION_GRADIENT = {
 
 const FACTION_BORDER = {
   '魏': 'border-blue-500/30',
-  '蜀': 'border-green-500/30',
-  '吴': 'border-red-500/30',
+  '蜀': 'border-red-500/30',
+  '吴': 'border-green-500/30',
   '群': 'border-gray-500/30',
   '神': 'border-yellow-500/30',
   '未知': 'border-gray-600/30',
@@ -51,6 +100,7 @@ const QUALITY_BADGE_STYLES = {
 export default function SkinDetail({
   general,
   skin,
+  fullData,
   onClose,
   isFavorite,
   onToggleFavorite,
@@ -92,43 +142,54 @@ export default function SkinDetail({
     if (e.target === e.currentTarget) onClose();
   }, [onClose]);
 
+  // Merge full data when it arrives — stable merge to avoid layout jumps
+  const enriched = useMemo(() => {
+    if (!fullData) return null;
+    const fg = fullData.generals.find((g) => g.id === general.id);
+    if (!fg) return null;
+    const fs = fg.skins.find((s) => s.id === skin.id);
+    return {
+      general: { ...fg, skills: fg.skills || general.skills },
+      skin: fs ? { ...fs } : null,
+    };
+  }, [fullData, general.id, skin.id]);
+
+  const detailGeneral = enriched ? enriched.general : general;
+  const detailSkin = enriched ? (enriched.skin || skin) : skin;
+
   // Determine which image to show
   const getDisplayImage = () => {
     switch (activeTab) {
-      case 'large': return skin.large || skin.static;
-      case 'static': return skin.static;
-      case 'dynamic': return skin.dynamic;
-      default: return skin.large || skin.static;
+      case 'large': return detailSkin.large || detailSkin.static;
+      case 'static': return detailSkin.static;
+      case 'dynamic': return detailSkin.dynamic;
+      case 'entrance': return detailSkin.dynamicEntrance;
+      default: return detailSkin.large || detailSkin.static;
     }
   };
 
   const displayImage = getDisplayImage();
-  const factionGradient = FACTION_GRADIENT[general.faction] || FACTION_GRADIENT['未知'];
-  const factionBorder = FACTION_BORDER[general.faction] || FACTION_BORDER['未知'];
-  const factionLabel = FACTION_LABEL[general.faction] || FACTION_LABEL['未知'];
+  const factionGradient = FACTION_GRADIENT[detailGeneral.faction] || FACTION_GRADIENT['未知'];
+  const factionBorder = FACTION_BORDER[detailGeneral.faction] || FACTION_BORDER['未知'];
+  const factionLabel = FACTION_LABEL[detailGeneral.faction] || FACTION_LABEL['未知'];
 
   // Count tabs
   const tabs = [];
-  if (skin.large) tabs.push({ id: 'large', label: '大图' });
-  if (skin.static) tabs.push({ id: 'static', label: '静态' });
-  if (skin.dynamic) tabs.push({ id: 'dynamic', label: '动态 GIF' });
-
-  // Auto-select available tab
-  if (tabs.length > 0 && !tabs.find((t) => t.id === activeTab)) {
-    // This would need to be in a useEffect, but for simplicity
-    // we just default to 'large' which falls back to static
-  }
+  if (detailSkin.large) tabs.push({ id: 'large', label: '大图' });
+  if (detailSkin.static) tabs.push({ id: 'static', label: '静态' });
+  if (detailSkin.dynamic) tabs.push({ id: 'dynamic', label: '动态 GIF' });
+  if (detailSkin.dynamicEntrance) tabs.push({ id: 'entrance', label: '动态登场' });
 
   // General skills (from character data)
-  const generalSkills = general.skills || [];
+  const generalSkills = detailGeneral.skills || [];
   // Skin quotes (from metadata)
-  const skinQuotes = skin.quotes || {};
+  const skinQuotes = detailSkin.quotes || {};
 
   // Determine if general has skills to display
   const hasSkills = generalSkills.length > 0;
 
   // Check if hallOfFame should be shown
-  const showHallOfFame = general.hallOfFame && general.hallOfFame !== '不在内' && general.hallOfFame !== '';
+  const showHallOfFame = detailGeneral.hallOfFame && detailGeneral.hallOfFame !== '不在内' && detailGeneral.hallOfFame !== '';
 
   return (
     <div className="detail-overlay" onClick={handleOverlayClick}>
@@ -145,9 +206,9 @@ export default function SkinDetail({
           ✕
         </button>
 
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
           {/* Left: Image Display */}
-          <div className="md:w-3/5 relative bg-antique-bg flex items-center justify-center min-h-[300px] md:min-h-[500px]">
+          <div className="md:w-3/5 relative bg-antique-bg flex items-center justify-center min-h-[300px] md:min-h-0">
             <div
               className="relative w-full h-full flex items-center justify-center cursor-zoom-in group"
               onClick={() => setFullscreenImage(displayImage)}
@@ -156,8 +217,8 @@ export default function SkinDetail({
               {displayImage ? (
                 <img
                   src={`/skins/${displayImage}`}
-                  alt={`${skin.name} - ${general.name}`}
-                  className="w-full h-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.02]"
+                  alt={`${detailSkin.name} - ${detailGeneral.name}`}
+                  className="max-w-full max-h-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.02]"
                 />
               ) : (
                 <div className="text-antique-muted/40 text-center p-8">
@@ -204,27 +265,27 @@ export default function SkinDetail({
           </div>
 
           {/* Right: Info Panel */}
-          <div className="md:w-2/5 p-6 md:p-8 flex flex-col overflow-y-auto" style={{ maxHeight: '70vh' }}>
+          <div className="md:w-2/5 p-6 md:p-8 flex flex-col overflow-y-auto min-h-0">
             {/* Header */}
             <div className="mb-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1">
                   {/* General title (称号) as subtitle */}
-                  {general.title && (
+                  {detailGeneral.title && (
                     <p className="text-antique-gold/70 text-xs font-classical tracking-wide mb-0.5">
-                      {general.title}
+                      {detailGeneral.title}
                     </p>
                   )}
                   <h2 className="text-xl md:text-2xl font-bold text-antique-cream leading-tight">
-                    {skin.name}
+                    {detailSkin.name}
                   </h2>
                   <p className="text-antique-muted text-sm mt-1">
-                    {general.name}
+                    {detailGeneral.name}
                   </p>
                 </div>
                 <CollectionBadge
                   active={isFavorite}
-                  onToggle={() => onToggleFavorite(general.id, skin.id)}
+                  onToggle={() => onToggleFavorite(detailGeneral.id, detailSkin.id)}
                   size="md"
                 />
               </div>
@@ -232,20 +293,20 @@ export default function SkinDetail({
               {/* Meta badges */}
               <div className="flex flex-wrap gap-2 mt-3">
                 <span className={`text-xs px-2.5 py-1 rounded border ${factionLabel}`}>
-                  {general.faction}
+                  {detailGeneral.faction}
                 </span>
-                {skin.quality && (
-                  <span className={`text-xs px-2.5 py-1 rounded border ${QUALITY_BADGE_STYLES[skin.quality] || 'bg-antique-gold/10 text-antique-gold border-antique-gold/30'}`}>
-                    {skin.quality}
+                {detailSkin.quality && (
+                  <span className={`text-xs px-2.5 py-1 rounded border ${QUALITY_BADGE_STYLES[detailSkin.quality] || 'bg-antique-gold/10 text-antique-gold border-antique-gold/30'}`}>
+                    {detailSkin.quality}
                   </span>
                 )}
                 {/* Position (定位) badge */}
-                {general.position && (
+                {detailGeneral.position && (
                   <span className="text-xs px-2.5 py-1 rounded border bg-blue-900/20 text-blue-300/80 border-blue-500/30">
-                    {general.position}
+                    {detailGeneral.position}
                   </span>
                 )}
-                {skin.dynamic && (
+                {detailSkin.dynamic && (
                   <span className="text-xs px-2.5 py-1 rounded border bg-cyan-900/20 text-cyan-300 border-cyan-500/30">
                     动态皮肤
                   </span>
@@ -257,9 +318,9 @@ export default function SkinDetail({
                   </span>
                 )}
                 {/* Artist badge */}
-                {skin.artist && (
+                {detailSkin.artist && (
                   <span className="text-xs px-2.5 py-1 rounded border bg-purple-900/20 text-purple-300/80 border-purple-500/30">
-                    🖌 画师：{skin.artist}
+                    🖌 画师：{detailSkin.artist}
                   </span>
                 )}
               </div>
@@ -279,15 +340,24 @@ export default function SkinDetail({
                     // Find matching quote for this skill
                     const quote = skinQuotes[skill.name] || null;
                     const quoteLines = quote ? quote.split('\n').filter(Boolean) : [];
+                    // Find matching voice group for this skill
+                    const voiceMatch = detailSkin.voices
+                      ? detailSkin.voices.find(v => v.skill === skill.name)
+                      : null;
                     return (
                       <div key={idx} className="skill-block">
-                        <div className="skill-name text-sm mb-0.5">{skill.name}</div>
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="skill-name text-sm">{skill.name}</span>
+                        </div>
                         <div className="skill-desc">{skill.description}</div>
                         {quoteLines.length > 0 && (
                           <div className="space-y-0.5 mt-0.5">
                             {quoteLines.map((line, li) => (
-                              <div key={li} className="skill-quote">
-                                「{line}」
+                              <div key={li} className="skill-quote flex items-start gap-1.5">
+                                {voiceMatch && voiceMatch.files && voiceMatch.files.length > 0 && (
+                                  <SkillVoiceButton files={voiceMatch.files} label={line} />
+                                )}
+                                <span>「{line}」</span>
                               </div>
                             ))}
                           </div>
@@ -300,55 +370,65 @@ export default function SkinDetail({
                 {skinQuotes['阵亡'] && (
                   <div className="skill-block mt-2">
                     <div className="skill-name text-sm mb-0.5">💀 阵亡</div>
-                    {skinQuotes['阵亡'].split('\n').filter(Boolean).map((line, li) => (
-                      <div key={li} className="skill-quote">「{line}」</div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Info Row: release time / acquisition (P1-4) */}
-            {(skin.releaseTime || skin.staticAcquisition || (skin.dynamicAcquisition && skin.dynamic)) && (
-              <div className="mb-4 info-row space-y-1">
-                {skin.releaseTime && (
-                  <div>
-                    <span className="info-label">上线时间：</span>
-                    <span className="info-value">{skin.releaseTime}</span>
-                  </div>
-                )}
-                {skin.staticAcquisition && (
-                  <div>
-                    <span className="info-label">获取方式：</span>
-                    <span className="info-value">{skin.staticAcquisition}</span>
-                  </div>
-                )}
-                {skin.dynamicAcquisition && skin.dynamic && (
-                  <div>
-                    <span className="info-label">动态获取：</span>
-                    <span className="info-value">{skin.dynamicAcquisition}</span>
+                    {skinQuotes['阵亡'].split('\n').filter(Boolean).map((line, li) => {
+                      const deathVoice = detailSkin.voices
+                        ? detailSkin.voices.find(v => v.skill === '阵亡')
+                        : null;
+                      return (
+                        <div key={li} className="skill-quote flex items-start gap-1.5">
+                          {deathVoice && deathVoice.files && deathVoice.files.length > 0 && (
+                            <SkillVoiceButton files={deathVoice.files} label={line} />
+                          )}
+                          <span>「{line}」</span>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
             )}
 
             {/* Story / Description */}
-            {skin.story && (
+            {detailSkin.story && (
               <div className="mb-4">
                 <h4 className="text-antique-gold text-sm font-semibold mb-2 tracking-wide">📖 皮肤故事</h4>
                 <div className="text-antique-text/80 text-sm leading-relaxed whitespace-pre-line
                   bg-antique-bg/50 rounded-lg p-3 border border-antique-border/20">
-                  {skin.story}
+                  {detailSkin.story}
                 </div>
               </div>
             )}
 
+            {/* Info Row: release time / acquisition (P1-4) */}
+            {(detailSkin.releaseTime || detailSkin.staticAcquisition || (detailSkin.dynamicAcquisition && detailSkin.dynamic)) && (
+              <div className="mb-4 info-row space-y-1">
+                {detailSkin.releaseTime && (
+                  <div>
+                    <span className="info-label">上线时间：</span>
+                    <span className="info-value">{detailSkin.releaseTime}</span>
+                  </div>
+                )}
+                {detailSkin.staticAcquisition && (
+                  <div>
+                    <span className="info-label">获取方式：</span>
+                    <span className="info-value">{detailSkin.staticAcquisition}</span>
+                  </div>
+                )}
+                {detailSkin.dynamicAcquisition && detailSkin.dynamic && (
+                  <div>
+                    <span className="info-label">动态获取：</span>
+                    <span className="info-value">{detailSkin.dynamicAcquisition}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Quotes (legacy display — only show if no skills block) */}
-            {skin.quotes && Object.keys(skin.quotes).length > 0 && !hasSkills && (
+            {detailSkin.quotes && Object.keys(detailSkin.quotes).length > 0 && !hasSkills && (
               <div className="mb-4">
                 <h4 className="text-antique-gold text-sm font-semibold mb-2 tracking-wide">💬 皮肤台词</h4>
                 <div className="space-y-2">
-                  {Object.entries(skin.quotes).map(([skill, quote]) => (
+                  {Object.entries(detailSkin.quotes).map(([skill, quote]) => (
                     <div key={skill}
                       className="bg-antique-bg/50 rounded-lg p-3 border border-antique-border/20">
                       <div className="flex flex-wrap items-center gap-2 mb-1.5">
@@ -373,23 +453,8 @@ export default function SkinDetail({
               </div>
             )}
 
-            {/* Divider */}
-            {skin.voices && skin.voices.length > 0 && (
-              <div className="ornament-divider my-4 text-xs">
-                <span>◆</span>
-              </div>
-            )}
-
-            {/* Voices */}
-            {skin.voices && skin.voices.length > 0 && (
-              <div>
-                <h4 className="text-antique-gold text-sm font-semibold mb-3 tracking-wide">🎵 语音列表</h4>
-                <VoicePlayer voices={skin.voices} />
-              </div>
-            )}
-
-            {/* No voices */}
-            {(!skin.voices || skin.voices.length === 0) && !skin.story && !skin.quotes && !hasSkills && (
+            {/* No extra info fallback */}
+            {!detailSkin.story && !detailSkin.quotes && !hasSkills && (
               <div className="flex-1 flex items-center justify-center text-antique-muted/40 text-sm">
                 暂无更多信息
               </div>
@@ -417,13 +482,13 @@ export default function SkinDetail({
           </button>
           <img
             src={`/skins/${fullscreenImage}`}
-            alt={`${skin.name} - ${general.name} (全屏)`}
+            alt={`${detailSkin.name} - ${detailGeneral.name} (全屏)`}
             className="max-w-[95vw] max-h-[95vh] object-contain"
             style={{ animation: 'scaleIn 0.25s ease-out both' }}
             onClick={(e) => e.stopPropagation()}
           />
           <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/50 text-sm">
-            {skin.name} — {general.name} · 点击任意处关闭
+            {detailSkin.name} — {detailGeneral.name} · 点击任意处关闭
           </p>
         </div>
       )}

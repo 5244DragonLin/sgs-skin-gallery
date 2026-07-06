@@ -40,7 +40,7 @@ const QUALITY_COLORS = {
  * @param {Function} props.onToggleFavorite - Favorite toggle handler
  * @param {number} props.index - Index for staggered animation
  */
-export default function SkinCard({
+export default React.memo(function SkinCard({
   skin,
   general,
   onClick,
@@ -91,6 +91,8 @@ export default function SkinCard({
   const hasVoices = skin.voices && skin.voices.length > 0;
   // Collection indicator — only show if collection exists and is not "不在收藏册内"
   const hasCollection = skin.collection && skin.collection !== '不在收藏册内' && skin.collection !== 'null';
+  // Hall of Fame indicator
+  const hasHallOfFame = general.hallOfFame && general.hallOfFame !== '不在内' && general.hallOfFame !== '';
 
   // Pack category label — only show if exists and not "其他"
   const showPackCategory = general.packCategory && general.packCategory !== '其他' && general.packCategory !== '';
@@ -134,7 +136,7 @@ export default function SkinCard({
           {hasLarge && (
             <span className="text-xs px-1.5 py-0.5 rounded bg-antique-gold/20 text-antique-gold/80 border border-antique-gold/30"
               title="有大图">
-              🖼
+              L
             </span>
           )}
           {hasDynamic && (
@@ -159,6 +161,12 @@ export default function SkinCard({
             <span className="text-xs px-1.5 py-0.5 rounded bg-amber-900/30 text-amber-300/80 border border-amber-500/30"
               title={`收藏册：${skin.collection}`}>
               📖
+            </span>
+          )}
+          {hasHallOfFame && (
+            <span className="text-xs px-1.5 py-0.5 rounded bg-purple-900/30 text-purple-300/80 border border-purple-500/30"
+              title={`名将堂：${general.hallOfFame}`}>
+              🏆
             </span>
           )}
         </div>
@@ -207,4 +215,4 @@ export default function SkinCard({
       </div>
     </div>
   );
-}
+});

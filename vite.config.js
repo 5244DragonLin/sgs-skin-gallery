@@ -4,21 +4,33 @@ import path from 'path';
 import fs from 'fs';
 import https from 'https';
 import http from 'http';
+import { fileURLToPath } from 'url';
+import { load as yamlLoad } from 'js-yaml';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PROJECT_ROOT = path.resolve(__dirname);
+const CONFIG_PATH = path.join(PROJECT_ROOT, 'gallery.config.yaml');
+
+/**
+ * 读取 gallery.config.yaml
+ */
+function loadConfig() {
+  if (!fs.existsSync(CONFIG_PATH)) return {};
+  try {
+    return yamlLoad(fs.readFileSync(CONFIG_PATH, 'utf-8')) || {};
+  } catch {
+    return {};
+  }
+}
+
+const config = loadConfig();
+const SKIN_ROOT = config.skinDir ? path.resolve(PROJECT_ROOT, config.skinDir) : (process.env.SKINS_DIR || 'D:/BaiduSyncdisk/其他/三国杀皮肤/BWIKI');
+const PORT = config.port || 3000;
 
 /**
  * Custom plugin to serve skin assets from the external BWIKI directory.
- * Maps /skins/* requests to the skin root directory.
- * Also proxies /voice/* requests to external audio URLs as a CORS fallback.
- * Configure via SKINS_DIR env variable or modify SKIN_ROOT below.
  */
 function skinAssetsPlugin() {
-  const SKIN_ROOT = process.env.SKINS_DIR || 'D:/BaiduSyncdisk/其他/三国杀皮肤/BWIKI';
-
-  /**
-   * Handle a /voice/ proxy request — fetches external audio URL and pipes to response.
-   * @param {object} req - HTTP request
-   * @param {object} res - HTTP response
-   */
   function handleVoiceProxy(req, res) {
     const targetUrl = decodeURIComponent(req.url.replace('/voice/', ''));
     const protocol = targetUrl.startsWith('https') ? https : http;
@@ -32,11 +44,6 @@ function skinAssetsPlugin() {
     });
   }
 
-  /**
-   * Handle a /skins/ asset request — serves local image/audio files from the skin root.
-   * @param {string} url - Request URL
-   * @param {object} res - HTTP response
-   */
   function handleSkinAsset(url, res) {
     const decodedPath = decodeURIComponent(url.slice('/skins/'.length));
     const filePath = path.join(SKIN_ROOT, decodedPath);
@@ -77,42 +84,26 @@ function skinAssetsPlugin() {
   return {
     name: 'skin-assets',
     configureServer(server) {
-      // Serve skin asset files and voice proxy via a global middleware
       server.middlewares.use((req, res, next) => {
         const url = req.url || '';
-
-        // /voice/ proxy — external audio URL CORS fallback
         if (url.startsWith('/voice/')) {
-          handleVoiceProxy(req, res);
-          return;
+          handleVoiceProxy(req, res); return;
         }
-
-        // Only handle /skins/* (asset files), not /skins.json (which is now /skin-data.json)
         if (url.startsWith('/skins/')) {
-          handleSkinAsset(url, res);
-          return;
+          handleSkinAsset(url, res); return;
         }
-
-        // Not our concern — pass to next middleware (Vite handles /skin-data.json from public/)
         next();
       });
     },
     configurePreviewServer(server) {
-      // Same middleware for preview mode
       server.middlewares.use((req, res, next) => {
         const url = req.url || '';
-
-        // /voice/ proxy — external audio URL CORS fallback
         if (url.startsWith('/voice/')) {
-          handleVoiceProxy(req, res);
-          return;
+          handleVoiceProxy(req, res); return;
         }
-
         if (url.startsWith('/skins/')) {
-          handleSkinAsset(url, res);
-          return;
+          handleSkinAsset(url, res); return;
         }
-
         next();
       });
     },
@@ -122,11 +113,10 @@ function skinAssetsPlugin() {
 export default defineConfig({
   plugins: [react(), skinAssetsPlugin()],
   server: {
-    port: 3000,
+    port: PORT,
     open: true,
     fs: {
-      // Allow serving files from the skin directory
-      allow: ['..', 'D:/BaiduSyncdisk/其他/三国杀皮肤/BWIKI'],
+      allow: ['..', SKIN_ROOT],
     },
   },
   build: {

@@ -2,6 +2,10 @@
    三国杀皮肤画廊 — 古董收藏册风格
    ============================================================ */
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* —— CSS Variables —— */
 :root {
   --color-bg: #1a120b;
@@ -307,7 +311,7 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.2s ease-out both;
 }
 
 .detail-panel {
@@ -318,13 +322,14 @@ body::before {
   max-width: 960px;
   max-height: 90vh;
   height: 90vh;
+  min-height: 0;
   background: var(--color-card);
   border: 2px solid var(--color-border);
   border-radius: 12px;
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.6),
     0 0 30px rgba(201, 164, 75, 0.1);
-  animation: scaleIn 0.35s var(--transition-smooth);
+  animation: scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .detail-panel::before {
@@ -430,7 +435,7 @@ body::before {
 .pack-category-btn.active {
   background: rgba(201, 164, 75, 0.2);
   border-color: var(--color-gold);
-  color: var(--color-gold-light);
+  color: var(--color-gold);
 }
 
 /* Expandable pack list container */
@@ -455,7 +460,7 @@ body::before {
 .pack-item-btn.active {
   background: rgba(201, 164, 75, 0.2);
   border-color: var(--color-gold);
-  color: var(--color-gold-light);
+  color: var(--color-gold);
 }
 
 /* ============================================================
