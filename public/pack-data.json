@@ -1,0 +1,1352 @@
+{
+  "generatedAt": "2026-07-06T13:01:50.920Z",
+  "totalCategories": 10,
+  "totalPacks": 91,
+  "categories": [
+    {
+      "category": "标准",
+      "packs": [
+        {
+          "name": "标准-贤君明主",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/4/46/du9jy7w8q2k05lgjonlmo7ixad1o8v2.png/30px-%E6%A0%87%E5%87%86-%E8%B4%A4%E5%90%9B%E6%98%8E%E4%B8%BB.png",
+          "count": 2,
+          "characters": [
+            "刘备",
+            "孙权"
+          ]
+        },
+        {
+          "name": "标准-蜀汉虎将",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/b/be/e83v19aq5wjmtspslhh1l9rtfi7hquy.png/30px-%E6%A0%87%E5%87%86-%E8%9C%80%E6%B1%89%E8%99%8E%E5%B0%86.png",
+          "count": 3,
+          "characters": [
+            "关羽",
+            "赵云",
+            "马超"
+          ]
+        },
+        {
+          "name": "标准-勇冠三军",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/d/d4/juo003quczxr6rv60chi632ut97jm7o.png/30px-%E6%A0%87%E5%87%86-%E5%8B%87%E5%86%A0%E4%B8%89%E5%86%9B.png",
+          "count": 3,
+          "characters": [
+            "吕布",
+            "甘宁",
+            "许褚"
+          ]
+        },
+        {
+          "name": "标准-灵心慧性",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/9/9b/ihplyq9gm7e632i2n4o5ub0si5ug7f0.png/30px-%E6%A0%87%E5%87%86-%E7%81%B5%E5%BF%83%E6%85%A7%E6%80%A7.png",
+          "count": 6,
+          "characters": [
+            "华佗",
+            "司马懿",
+            "吕蒙",
+            "诸葛亮",
+            "郭嘉",
+            "陆逊"
+          ]
+        },
+        {
+          "name": "标准-国色天香",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/d/d2/6161uxx7lavot7yonxk2aa15ygvlo3g.png/30px-%E6%A0%87%E5%87%86-%E5%9B%BD%E8%89%B2%E5%A4%A9%E9%A6%99.png",
+          "count": 4,
+          "characters": [
+            "大乔",
+            "孙尚香",
+            "甄姬",
+            "貂蝉"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "神话再临",
+      "packs": [
+        {
+          "name": "神话再临-风包",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/7/78/r5bszgzzowt0o8lqhi4whlseqej7q2b.png/30px-%E7%A5%9E%E8%AF%9D%E5%86%8D%E4%B8%B4-%E9%A3%8E%E5%8C%85.png",
+          "count": 7,
+          "characters": [
+            "于吉",
+            "夏侯渊",
+            "曹仁",
+            "神关羽",
+            "神吕蒙",
+            "魏延",
+            "黄忠"
+          ]
+        },
+        {
+          "name": "神话再临-火包",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/a/a4/nxw2my4hyl8iw13ib5qyo40enxslb5m.png/30px-%E7%A5%9E%E8%AF%9D%E5%86%8D%E4%B8%B4-%E7%81%AB%E5%8C%85.png",
+          "count": 10,
+          "characters": [
+            "典韦",
+            "卧龙诸葛",
+            "太史慈",
+            "庞德",
+            "庞统",
+            "神周瑜",
+            "神诸葛亮",
+            "荀彧",
+            "袁绍",
+            "颜良文丑"
+          ]
+        },
+        {
+          "name": "神话再临-林包",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/2/20/pizai8cvfq86xdw22p26fcgix9epjrp.png/30px-%E7%A5%9E%E8%AF%9D%E5%86%8D%E4%B8%B4-%E6%9E%97%E5%8C%85.png",
+          "count": 9,
+          "characters": [
+            "孙坚",
+            "孟获",
+            "曹丕",
+            "祝融",
+            "神吕布",
+            "神曹操",
+            "董卓",
+            "贾诩",
+            "鲁肃"
+          ]
+        },
+        {
+          "name": "神话再临-山包",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/4/47/mvs6p3835v6rqkh0otztpsu6wtk40j0.png/30px-%E7%A5%9E%E8%AF%9D%E5%86%8D%E4%B8%B4-%E5%B1%B1%E5%8C%85.png",
+          "count": 8,
+          "characters": [
+            "刘禅",
+            "姜维",
+            "孙策",
+            "左慈",
+            "神司马懿",
+            "神赵云",
+            "蔡文姬",
+            "邓艾"
+          ]
+        },
+        {
+          "name": "神话再临-阴包",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/b/b2/nzpgqbog2nw1fw4fkxpgewnpnrmjagy.png/30px-%E7%A5%9E%E8%AF%9D%E5%86%8D%E4%B8%B4-%E9%98%B4%E5%8C%85.png",
+          "count": 10,
+          "characters": [
+            "严颜",
+            "卢植",
+            "孙亮",
+            "王基",
+            "王平",
+            "神刘备",
+            "神陆逊",
+            "蒯良蒯越",
+            "许攸",
+            "陆绩"
+          ]
+        },
+        {
+          "name": "神话再临-雷包",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/6/62/4mddx38g1ngn1f3slzbwhsj3rbgwl61.png/30px-%E7%A5%9E%E8%AF%9D%E5%86%8D%E4%B8%B4-%E9%9B%B7%E5%8C%85.png",
+          "count": 9,
+          "characters": [
+            "周妃",
+            "毌丘俭",
+            "神张辽",
+            "神甘宁",
+            "袁术",
+            "诸葛瞻",
+            "郝昭",
+            "陆抗",
+            "陈到"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "一将成名",
+      "packs": [
+        {
+          "name": "一将成名-2011",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/9/9a/kp7l541znywdrjc9mzlcqjk8a11yytm.png/30px-%E4%B8%80%E5%B0%86%E6%88%90%E5%90%8D-2011.png",
+          "count": 9,
+          "characters": [
+            "于禁",
+            "凌统",
+            "吴国太",
+            "徐盛",
+            "曹植",
+            "法正",
+            "陈宫",
+            "马谡",
+            "高顺"
+          ]
+        },
+        {
+          "name": "一将成名-2012",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/4/4b/4nwy5bcqtvw6ojx4tw8km5zuii9chd1.png/30px-%E4%B8%80%E5%B0%86%E6%88%90%E5%90%8D-2012.png",
+          "count": 11,
+          "characters": [
+            "关兴张苞",
+            "刘表",
+            "廖化",
+            "曹彰",
+            "步练师",
+            "王异",
+            "程普",
+            "荀攸",
+            "钟会",
+            "韩当",
+            "马岱"
+          ]
+        },
+        {
+          "name": "一将成名-2013",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/b/b1/444hm78w6v9lkit9jtf7l937ymtx53l.png/30px-%E4%B8%80%E5%B0%86%E6%88%90%E5%90%8D-2013.png",
+          "count": 11,
+          "characters": [
+            "伏皇后",
+            "关平",
+            "刘封",
+            "曹冲",
+            "朱然",
+            "李儒",
+            "满宠",
+            "潘璋马忠",
+            "简雍",
+            "虞翻",
+            "郭淮"
+          ]
+        },
+        {
+          "name": "一将成名-2014",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/b/b3/afq5r77rasjkhul2pgczhfy0bl1hf69.png/30px-%E4%B8%80%E5%B0%86%E6%88%90%E5%90%8D-2014.png",
+          "count": 9,
+          "characters": [
+            "吴懿",
+            "周仓",
+            "曹真",
+            "朱桓",
+            "沮授",
+            "蔡夫人",
+            "陈群",
+            "韩浩史涣",
+            "顾雍"
+          ]
+        },
+        {
+          "name": "一将成名-2015",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/1/12/4e8zcugrft0blcbfi8ck3cvgfxqn3h4.png/30px-%E4%B8%80%E5%B0%86%E6%88%90%E5%90%8D-2015.png",
+          "count": 11,
+          "characters": [
+            "全琮",
+            "公孙渊",
+            "刘谌",
+            "夏侯氏",
+            "孙休",
+            "张嶷",
+            "曹休",
+            "曹叡",
+            "朱治",
+            "郭图逢纪",
+            "钟繇"
+          ]
+        },
+        {
+          "name": "一将成名-2022",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/6/64/82vo4ovjdj1ya8ncixbnfineg88aa84.png/30px-%E4%B8%80%E5%B0%86%E6%88%90%E5%90%8D-2022.png",
+          "count": 8,
+          "characters": [
+            "李婉",
+            "武安国",
+            "苏飞",
+            "诸葛尚",
+            "谯周",
+            "轲比能",
+            "陆凯",
+            "韩龙"
+          ]
+        },
+        {
+          "name": "一将成名-2023",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/c/c3/mx08c3hj03nn4t7fb7eoop15ei0ha6v.png/30px-%E4%B8%80%E5%B0%86%E6%88%90%E5%90%8D-2023.png",
+          "count": 10,
+          "characters": [
+            "令狐愚",
+            "司马孚",
+            "夏侯楙",
+            "孙礼",
+            "宣公主",
+            "徐琨",
+            "裴秀",
+            "费曜",
+            "陈式",
+            "马钧"
+          ]
+        },
+        {
+          "name": "一将成名-2025",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/8/89/nqugf862tj8l5jgj34r9thkfl9nthey.png/30px-%E4%B8%80%E5%B0%86%E6%88%90%E5%90%8D-2025.png",
+          "count": 4,
+          "characters": [
+            "伍孚",
+            "张奂",
+            "张燕",
+            "荀勖"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "星火燎原",
+      "packs": [
+        {
+          "name": "星火燎原-天府",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/3/36/2wv0v6xn7qlijocs9m7sul6rmf28cte.png/30px-%E6%98%9F%E7%81%AB%E7%87%8E%E5%8E%9F-%E5%A4%A9%E5%BA%9C.png",
+          "count": 8,
+          "characters": [
+            "刘协",
+            "吴苋",
+            "孙登",
+            "张星彩",
+            "曹昂",
+            "曹节",
+            "步骘"
+          ]
+        },
+        {
+          "name": "星火燎原-天梁",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/e/ea/p5ym9n8xyy7tv7zwxmkrsxfh6bi5x13.png/30px-%E6%98%9F%E7%81%AB%E7%87%8E%E5%8E%9F-%E5%A4%A9%E6%A2%81.png",
+          "count": 8,
+          "characters": [
+            "严畯",
+            "刘焉",
+            "司马朗",
+            "张鲁",
+            "李典",
+            "杜畿",
+            "董允",
+            "诸葛瑾"
+          ]
+        },
+        {
+          "name": "星火燎原-天机",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/7/72/ti4emyn7o70ooevznvp6j9pap696deh.png/30px-%E6%98%9F%E7%81%AB%E7%87%8E%E5%8E%9F-%E5%A4%A9%E6%9C%BA.png",
+          "count": 8,
+          "characters": [
+            "孙乾",
+            "戏志才",
+            "潘濬",
+            "王粲",
+            "秦宓",
+            "蔡邕",
+            "薛综",
+            "郭皇后"
+          ]
+        },
+        {
+          "name": "星火燎原-天同",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/8/89/bl3dh5dc484zuqdqhoia6192d6y31qm.png/30px-%E6%98%9F%E7%81%AB%E7%87%8E%E5%8E%9F-%E5%A4%A9%E5%90%8C.png",
+          "count": 8,
+          "characters": [
+            "SP太史慈",
+            "SP姜维",
+            "SP孙尚香",
+            "SP庞德",
+            "SP庞统",
+            "SP徐庶",
+            "SP蔡文姬",
+            "SP黄月英"
+          ]
+        },
+        {
+          "name": "星火燎原-天相",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/6/69/b2cewrd7lmqaniihtr8lvrv7384sl5a.png/30px-%E6%98%9F%E7%81%AB%E7%87%8E%E5%8E%9F-%E5%A4%A9%E7%9B%B8.png",
+          "count": 7,
+          "characters": [
+            "刘繇",
+            "吕岱",
+            "周鲂",
+            "文聘",
+            "李严",
+            "贺齐",
+            "马忠"
+          ]
+        },
+        {
+          "name": "星火燎原-七杀",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/7/7b/ju54wmclrthm0bopppe2ov0uuc0ivsf.png/30px-%E6%98%9F%E7%81%AB%E7%87%8E%E5%8E%9F-%E4%B8%83%E6%9D%80.png",
+          "count": 8,
+          "characters": [
+            "公孙瓒",
+            "关银屏",
+            "吕虔",
+            "张梁",
+            "徐氏",
+            "祖茂",
+            "蹋顿",
+            "马云騄"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "限定",
+      "packs": [
+        {
+          "name": "限定-神·武",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/5/56/mm82h1coxrbeumdivyb8rdaq42r9q78.png/30px-%E9%99%90%E5%AE%9A-%E7%A5%9E%C2%B7%E6%AD%A6.png",
+          "count": 13,
+          "characters": [
+            "神典韦",
+            "神华佗",
+            "神姜维",
+            "神孙权",
+            "神庞统",
+            "神张角",
+            "神张飞",
+            "神曹丕",
+            "神许褚",
+            "神邓艾",
+            "神钟会",
+            "神马超",
+            "神黄忠"
+          ]
+        },
+        {
+          "name": "限定-祈福",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/f/f9/7ak1cuxsm7qhw81yd0fw729u3zdz1l7.png/30px-%E9%99%90%E5%AE%9A-%E7%A5%88%E7%A6%8F.png",
+          "count": 7,
+          "characters": [
+            "关索",
+            "张琪瑛",
+            "徐荣",
+            "曹婴",
+            "曹纯",
+            "赵襄",
+            "鲍三娘"
+          ]
+        },
+        {
+          "name": "限定-隐山之玉",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/4/47/n5efejjx02sbwk41lodx6lgkvvd1hqa.png/30px-%E9%99%90%E5%AE%9A-%E9%9A%90%E5%B1%B1%E4%B9%8B%E7%8E%89.png",
+          "count": 5,
+          "characters": [
+            "卢弈",
+            "周夷",
+            "庞凤衣",
+            "曹轶",
+            "郭缇萦"
+          ]
+        },
+        {
+          "name": "限定-高山仰止",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/4/4b/04l4pqm2m181yxdwxq51npr8d0a3e00.png/30px-%E9%99%90%E5%AE%9A-%E9%AB%98%E5%B1%B1%E4%BB%B0%E6%AD%A2.png",
+          "count": 2,
+          "characters": [
+            "刘徽",
+            "王朗"
+          ]
+        },
+        {
+          "name": "限定-武庙",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/d/d0/mk97158kh7w60syqt6316svjwmaazcg.png/30px-%E9%99%90%E5%AE%9A-%E6%AD%A6%E5%BA%99.png",
+          "count": 6,
+          "characters": [
+            "武关羽",
+            "武张飞",
+            "武皇甫嵩",
+            "武诸葛亮",
+            "武陆抗",
+            "武陆逊"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "威震",
+      "packs": [
+        {
+          "name": "威震-威震天下",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/6/6b/2mmkkeqv3s058udgqn7cdp8mwrjnh2v.png/30px-%E5%A8%81%E9%9C%87-%E5%A8%81%E9%9C%87%E5%A4%A9%E4%B8%8B.png",
+          "count": 6,
+          "characters": [
+            "威公孙瓒",
+            "威吕布",
+            "威张辽",
+            "威董卓",
+            "威马腾",
+            "威马超"
+          ]
+        },
+        {
+          "name": "威震-君威盖世",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/2/23/8t2jm4uf98dbbd5ftmk5rxc4tq9krse.png/30px-%E5%A8%81%E9%9C%87-%E5%90%9B%E5%A8%81%E7%9B%96%E4%B8%96.png",
+          "count": 5,
+          "characters": [
+            "威刘备",
+            "威孙权",
+            "威孙策",
+            "威曹丕",
+            "威曹操"
+          ]
+        },
+        {
+          "name": "威震-片羽威凤",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/1/11/q44tjrlzb4r1ifdsi443wx5pv6zlnow.png/30px-%E5%A8%81%E9%9C%87-%E7%89%87%E7%BE%BD%E5%A8%81%E5%87%A4.png",
+          "count": 3,
+          "characters": [
+            "威关银屏",
+            "威孙尚香",
+            "威张星彩"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "谋",
+      "packs": [
+        {
+          "name": "谋定-谋定天下",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/8/89/5d16tju5pp3pkmtldizj6s03wcli9ox.png/30px-%E8%B0%8B%E5%AE%9A-%E8%B0%8B%E5%AE%9A%E5%A4%A9%E4%B8%8B.png",
+          "count": 10,
+          "characters": [
+            "谋司马懿",
+            "谋周瑜",
+            "谋姜维",
+            "谋庞统",
+            "谋荀彧",
+            "谋诸葛亮",
+            "谋贾诩",
+            "谋郭嘉",
+            "谋陆逊",
+            "谋鲁肃"
+          ]
+        },
+        {
+          "name": "谋定-冢虎狼顾",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/3/30/87oyi91ut7511iex8x1fc1p4jzxtbpe.png/30px-%E8%B0%8B%E5%AE%9A-%E5%86%A2%E8%99%8E%E7%8B%BC%E9%A1%BE.png",
+          "count": 4,
+          "characters": [
+            "谋司马师",
+            "谋曹爽",
+            "谋王凌",
+            "谋蒋济"
+          ]
+        },
+        {
+          "name": "谋定-子敬邀刀",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/3/38/09nebp34dxrgvg5rk1m1xop2cm9v0qt.png/30px-%E8%B0%8B%E5%AE%9A-%E5%AD%90%E6%95%AC%E9%82%80%E5%88%80.png",
+          "count": 4,
+          "characters": [
+            "谋关羽",
+            "谋吕蒙",
+            "谋诸葛瑾"
+          ]
+        },
+        {
+          "name": "谋定-毒士鸩计",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/c/cf/3qa2rraw8gel53htq6py77ggxnchgq2.png/30px-%E8%B0%8B%E5%AE%9A-%E6%AF%92%E5%A3%AB%E9%B8%A9%E8%AE%A1.png",
+          "count": 4,
+          "characters": [
+            "谋典韦",
+            "谋张绣",
+            "谋曹昂",
+            "谋胡车儿"
+          ]
+        },
+        {
+          "name": "谋定-王佐倡义",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/4/46/oo4uvnwk1hnbm5r6a3796b8qvo93yqz.png/30px-%E8%B0%8B%E5%AE%9A-%E7%8E%8B%E4%BD%90%E5%80%A1%E4%B9%89.png",
+          "count": 4,
+          "characters": [
+            "谋刘协",
+            "谋曹洪",
+            "谋杨奉",
+            "谋董承"
+          ]
+        },
+        {
+          "name": "谋定-武侯定南",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/c/cf/380igac8yblc4e5gl9kzrh329glas9h.png/30px-%E8%B0%8B%E5%AE%9A-%E6%AD%A6%E4%BE%AF%E5%AE%9A%E5%8D%97.png",
+          "count": 2,
+          "characters": [
+            "谋王平",
+            "谋马谡"
+          ]
+        },
+        {
+          "name": "谋定-凤雏溯攻",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/3/38/26wh1bilw1odnmvvw2qjhf6dtzm4fer.png/30px-%E8%B0%8B%E5%AE%9A-%E5%87%A4%E9%9B%8F%E6%BA%AF%E6%94%BB.png",
+          "count": 4,
+          "characters": [
+            "谋刘璋",
+            "谋吴懿",
+            "谋张任",
+            "谋法正"
+          ]
+        },
+        {
+          "name": "谋定-周郎将计",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/f/f3/bzbe5wf1v2ctconbyuv1y7njy147lk1.png/30px-%E8%B0%8B%E5%AE%9A-%E5%91%A8%E9%83%8E%E5%B0%86%E8%AE%A1.png",
+          "count": 4,
+          "characters": [
+            "谋程昱",
+            "谋程普",
+            "谋蒋干",
+            "谋黄盖"
+          ]
+        },
+        {
+          "name": "谋定-伯言绽火",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/c/ca/c73dcgbvgv2kuucpvtxgbxuzdel2p6k.png/30px-%E8%B0%8B%E5%AE%9A-%E4%BC%AF%E8%A8%80%E7%BB%BD%E7%81%AB.png",
+          "count": 4,
+          "characters": [
+            "谋徐盛",
+            "谋朱然",
+            "谋骆统",
+            "谋黄权"
+          ]
+        },
+        {
+          "name": "谋定-奇佐论胜",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/c/c9/8i8q12nx7rrc1ihwd2wvy63ocfn7y3h.png/30px-%E8%B0%8B%E5%AE%9A-%E5%A5%87%E4%BD%90%E8%AE%BA%E8%83%9C.png",
+          "count": 4,
+          "characters": [
+            "谋沮授",
+            "谋淳于琼",
+            "谋许攸",
+            "谋陈琳"
+          ]
+        },
+        {
+          "name": "谋定-幼麟绝战",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/2/29/mkox7zv3rhertcef973abv2tq6i5klq.png/30px-%E8%B0%8B%E5%AE%9A-%E5%B9%BC%E9%BA%9F%E7%BB%9D%E6%88%98.png",
+          "count": 2,
+          "characters": [
+            "谋胡烈",
+            "谋邓艾"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "星河璀璨",
+      "packs": [
+        {
+          "name": "星河璀璨-天枢",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/e/ed/562c9f9p5jzsh49z0ntp78dspdqtx7i.png/30px-%E6%98%9F%E6%B2%B3%E7%92%80%E7%92%A8-%E5%A4%A9%E6%9E%A2.png",
+          "count": 4,
+          "characters": [
+            "星张让",
+            "星董卓",
+            "星袁术",
+            "星袁绍"
+          ]
+        },
+        {
+          "name": "星河璀璨-天璇",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/d/d4/o5q91jfqupbwpoolcpdwsuxsknzwzs2.png/30px-%E6%98%9F%E6%B2%B3%E7%92%80%E7%92%A8-%E5%A4%A9%E7%92%87.png",
+          "count": 4,
+          "characters": [
+            "星张昭",
+            "星张松",
+            "星法正",
+            "星荀彧"
+          ]
+        },
+        {
+          "name": "星河璀璨-天玑",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/4/40/e2cg7a0rzu29q4fhu1sa1fkpuaqqz9w.png/30px-%E6%98%9F%E6%B2%B3%E7%92%80%E7%92%A8-%E5%A4%A9%E7%8E%91.png",
+          "count": 0,
+          "characters": []
+        },
+        {
+          "name": "星河璀璨-天权",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/6/6d/mdhd1s0bafi8a9j97jd4bkl3uc3adza.png/30px-%E6%98%9F%E6%B2%B3%E7%92%80%E7%92%A8-%E5%A4%A9%E6%9D%83.png",
+          "count": 0,
+          "characters": []
+        },
+        {
+          "name": "星河璀璨-玉衡",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/9/91/1qaptcavyn7kfc0fmf9d32blz59tzep.png/30px-%E6%98%9F%E6%B2%B3%E7%92%80%E7%92%A8-%E7%8E%89%E8%A1%A1.png",
+          "count": 5,
+          "characters": [
+            "星张春华",
+            "星张郃",
+            "星曹仁",
+            "星董允",
+            "星蒋琬"
+          ]
+        },
+        {
+          "name": "星河璀璨-开阳",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/a/ac/cr2x5gui3ila8xt11wyr8rxn13nh2v6.png/30px-%E6%98%9F%E6%B2%B3%E7%92%80%E7%92%A8-%E5%BC%80%E9%98%B3.png",
+          "count": 3,
+          "characters": [
+            "星夏侯霸",
+            "星太史慈",
+            "星孙坚"
+          ]
+        },
+        {
+          "name": "星河璀璨-瑶光",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/e/e1/ozr7l23lyre0g8oj9u8tn3tdt5nn9j8.png/30px-%E6%98%9F%E6%B2%B3%E7%92%80%E7%92%A8-%E7%91%B6%E5%85%89.png",
+          "count": 4,
+          "characters": [
+            "星丁奉",
+            "星孙尚香",
+            "星文丑",
+            "星颜良"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "荟萃",
+      "packs": [
+        {
+          "name": "荟萃-黄巾之乱",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/6/6c/cfng6a206gprq5u0t0nwveeg1vvyk4o.png/30px-%E8%8D%9F%E8%90%83-%E9%BB%84%E5%B7%BE%E4%B9%8B%E4%B9%B1.png",
+          "count": 4,
+          "characters": [
+            "刘宏",
+            "朱儁",
+            "许劭",
+            "韩遂"
+          ]
+        },
+        {
+          "name": "荟萃-诸侯伐董",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/9/93/i02ddgotougjveb6a98xmzey8pxx31x.png/30px-%E8%8D%9F%E8%90%83-%E8%AF%B8%E4%BE%AF%E4%BC%90%E8%91%A3.png",
+          "count": 4,
+          "characters": [
+            "丁原",
+            "王荣",
+            "韩馥",
+            "麴义"
+          ]
+        },
+        {
+          "name": "荟萃-徐州风云",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/8/80/pkg923kjfcwdo6z49b1k6lxvzrd7lcy.png/30px-%E8%8D%9F%E8%90%83-%E5%BE%90%E5%B7%9E%E9%A3%8E%E4%BA%91.png",
+          "count": 4,
+          "characters": [
+            "丘力居",
+            "曹嵩",
+            "曹豹",
+            "陶谦"
+          ]
+        },
+        {
+          "name": "荟萃-中原狼烟",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/8/88/naca0ht5m4nlx4qbgjnofx4k0svvegf.png/30px-%E8%8D%9F%E8%90%83-%E4%B8%AD%E5%8E%9F%E7%8B%BC%E7%83%9F.png",
+          "count": 3,
+          "characters": [
+            "曹安民",
+            "董承",
+            "邹氏"
+          ]
+        },
+        {
+          "name": "荟萃-虓虎悲歌",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/5/55/te2l3r9umtt6rxpxtngk05zabw3f4wk.png/30px-%E8%8D%9F%E8%90%83-%E8%99%93%E8%99%8E%E6%82%B2%E6%AD%8C.png",
+          "count": 4,
+          "characters": [
+            "严夫人",
+            "朱灵",
+            "郝萌",
+            "阎柔"
+          ]
+        },
+        {
+          "name": "荟萃-群雄伺动",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/b/ba/kr09zrbzywygvs1tzncqapahw4tj3t5.png/30px-%E8%8D%9F%E8%90%83-%E7%BE%A4%E9%9B%84%E4%BC%BA%E5%8A%A8.png",
+          "count": 5,
+          "characters": [
+            "严白虎",
+            "车胄",
+            "阎象",
+            "韩嵩",
+            "马铁"
+          ]
+        },
+        {
+          "name": "荟萃-文和乱武",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/7/79/mkgj9blzeznf1sndv2blndjojzqktz6.png/30px-%E8%8D%9F%E8%90%83-%E6%96%87%E5%92%8C%E4%B9%B1%E6%AD%A6.png",
+          "count": 10,
+          "characters": [
+            "张横",
+            "张济",
+            "李傕",
+            "李傕郭汜",
+            "梁兴",
+            "樊稠",
+            "段煨",
+            "牛辅",
+            "董翓",
+            "郭汜"
+          ]
+        },
+        {
+          "name": "荟萃-逐鹿天下",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/f/f7/bk3de8w9axarlecjomzpl3uluj9z9q1.png/30px-%E8%8D%9F%E8%90%83-%E9%80%90%E9%B9%BF%E5%A4%A9%E4%B8%8B.png",
+          "count": 4,
+          "characters": [
+            "卑弥呼",
+            "卫温诸葛直",
+            "吕凯",
+            "张恭"
+          ]
+        },
+        {
+          "name": "荟萃-食禄尽忠",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/8/8d/ar0q79swa7xfd8lro2u641mnef04ee1.png/30px-%E8%8D%9F%E8%90%83-%E9%A3%9F%E7%A6%84%E5%B0%BD%E5%BF%A0.png",
+          "count": 5,
+          "characters": [
+            "崔烈",
+            "张昌蒲",
+            "忙牙长",
+            "沙摩柯",
+            "许贡"
+          ]
+        },
+        {
+          "name": "荟萃-戚宦之争",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/5/53/ixuhrtzes0ba4vwqp8j66hf8qw0g2t2.png/30px-%E8%8D%9F%E8%90%83-%E6%88%9A%E5%AE%A6%E4%B9%8B%E4%BA%89.png",
+          "count": 6,
+          "characters": [
+            "伏完",
+            "何太后",
+            "何进",
+            "冯方",
+            "穆顺",
+            "赵忠"
+          ]
+        },
+        {
+          "name": "荟萃-上兵伐谋",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/a/af/p8vd2yo6d622h58q7oypafltyo4h4dr.png/30px-%E8%8D%9F%E8%90%83-%E4%B8%8A%E5%85%B5%E4%BC%90%E8%B0%8B.png",
+          "count": 3,
+          "characters": [
+            "伊籍",
+            "李肃",
+            "辛毗"
+          ]
+        },
+        {
+          "name": "荟萃-兵临城下",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/9/99/prg9u9h0oya9zyhj5z172vubsi9w0r3.png/30px-%E8%8D%9F%E8%90%83-%E5%85%B5%E4%B8%B4%E5%9F%8E%E4%B8%8B.png",
+          "count": 10,
+          "characters": [
+            "孙桓",
+            "孙狼",
+            "孟达",
+            "是仪",
+            "李异谢旌",
+            "李采薇",
+            "牛金",
+            "王威",
+            "糜芳傅士仁",
+            "赵俨"
+          ]
+        },
+        {
+          "name": "荟萃-千里单骑",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/a/a1/d5ovrp0qfr2j68h5t2wfnb0hwzkchzp.png/30px-%E8%8D%9F%E8%90%83-%E5%8D%83%E9%87%8C%E5%8D%95%E9%AA%91.png",
+          "count": 7,
+          "characters": [
+            "SP关羽",
+            "关宁",
+            "卞喜",
+            "杜夫人",
+            "秦宜禄",
+            "胡班",
+            "胡金定"
+          ]
+        },
+        {
+          "name": "荟萃-烽火连天",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/5/5f/r7zcl158xzlwzb5tew5xudvl4cxlilr.png/30px-%E8%8D%9F%E8%90%83-%E7%83%BD%E7%81%AB%E8%BF%9E%E5%A4%A9.png",
+          "count": 4,
+          "characters": [
+            "南华老仙",
+            "庞德公",
+            "张宁"
+          ]
+        },
+        {
+          "name": "荟萃-无双上将",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/c/c1/gvmxodywlnze9ej8rcp1ikgrrqzw32w.png/30px-%E8%8D%9F%E8%90%83-%E6%97%A0%E5%8F%8C%E4%B8%8A%E5%B0%86.png",
+          "count": 7,
+          "characters": [
+            "周善",
+            "夏侯恩",
+            "夏侯杰",
+            "淳于琼",
+            "潘凤",
+            "蔡阳",
+            "邢道荣"
+          ]
+        },
+        {
+          "name": "荟萃-才子佳人",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/2/2e/mxtf4v3a1a60qdhtqvrmrzkpmedgml3.png/30px-%E8%8D%9F%E8%90%83-%E6%89%8D%E5%AD%90%E4%BD%B3%E4%BA%BA.png",
+          "count": 13,
+          "characters": [
+            "何晏",
+            "夏侯令女",
+            "夏侯玄",
+            "孔融",
+            "庞山民",
+            "张媱",
+            "张嫙",
+            "滕胤",
+            "王悦",
+            "王桃",
+            "蒯祺",
+            "赵嫣"
+          ]
+        },
+        {
+          "name": "荟萃-芝兰玉树",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/a/a7/jatcun26prnx5cn0sv35z7h08adpetp.png/30px-%E8%8D%9F%E8%90%83-%E8%8A%9D%E5%85%B0%E7%8E%89%E6%A0%91.png",
+          "count": 13,
+          "characters": [
+            "万年公主",
+            "乐綝",
+            "刘永",
+            "刘理",
+            "吉邈吉穆",
+            "吕玲绮",
+            "庞会",
+            "庞宏",
+            "张虎",
+            "滕公主",
+            "袁谭袁尚袁熙",
+            "赵统赵广",
+            "黄舞蝶"
+          ]
+        },
+        {
+          "name": "荟萃-天下归心",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/6/64/38mrzufzg8kwoxhcytsf6rp606zmoo3.png/30px-%E8%8D%9F%E8%90%83-%E5%A4%A9%E4%B8%8B%E5%BD%92%E5%BF%83.png",
+          "count": 17,
+          "characters": [
+            "SP贾诩",
+            "乐进",
+            "侯成",
+            "吕旷吕翔",
+            "唐咨",
+            "尹夫人",
+            "曹洪",
+            "秦朗",
+            "臧霸",
+            "董昭",
+            "蔡瑁张允",
+            "阚泽",
+            "陈珪",
+            "陈登",
+            "马邈",
+            "高览"
+          ]
+        },
+        {
+          "name": "荟萃-绕庭之鸦",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/f/fb/dh8q75nnu6sqrga2sf5yvfx99601adz.png/30px-%E8%8D%9F%E8%90%83-%E7%BB%95%E5%BA%AD%E4%B9%8B%E9%B8%A6.png",
+          "count": 5,
+          "characters": [
+            "孙綝",
+            "岑昏",
+            "贾充",
+            "魏讽",
+            "黄皓"
+          ]
+        },
+        {
+          "name": "荟萃-代汉涂高",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/1/11/dw6tfa63h81qyzgwaboj3r9u5dtk9o8.png/30px-%E8%8D%9F%E8%90%83-%E4%BB%A3%E6%B1%89%E6%B6%82%E9%AB%98.png",
+          "count": 8,
+          "characters": [
+            "乐就",
+            "张勋",
+            "桥蕤",
+            "纪灵",
+            "董绾",
+            "袁胤",
+            "雷薄",
+            "马日磾"
+          ]
+        },
+        {
+          "name": "荟萃-江湖之远",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/0/0e/jw524b0vlu7ip0zntdel94i63hv9jml.png/30px-%E8%8D%9F%E8%90%83-%E6%B1%9F%E6%B9%96%E4%B9%8B%E8%BF%9C.png",
+          "count": 5,
+          "characters": [
+            "张世平",
+            "王烈",
+            "田畴",
+            "管宁",
+            "黄承彦"
+          ]
+        },
+        {
+          "name": "荟萃-悬壶济世",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/3/3a/3me82ji9h9du2sswsqh6oj2xu7k4ndu.png/30px-%E8%8D%9F%E8%90%83-%E6%82%AC%E5%A3%B6%E6%B5%8E%E4%B8%96.png",
+          "count": 5,
+          "characters": [
+            "刘宠骆俊",
+            "吉平",
+            "吴普",
+            "孙寒华",
+            "郑浑"
+          ]
+        },
+        {
+          "name": "荟萃-纵横捭阖",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/3/39/66zus04mzk326vcrkbz7dm6rlryxuqe.png/30px-%E8%8D%9F%E8%90%83-%E7%BA%B5%E6%A8%AA%E6%8D%AD%E9%98%96.png",
+          "count": 7,
+          "characters": [
+            "冯熙",
+            "宗预",
+            "祢衡",
+            "羊祜",
+            "荀谌",
+            "邓芝",
+            "陆郁生"
+          ]
+        },
+        {
+          "name": "荟萃-匡鼎炎汉",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/1/1a/851vz5gjruobblm461zqsbcid0vq9f6.png/30px-%E8%8D%9F%E8%90%83-%E5%8C%A1%E9%BC%8E%E7%82%8E%E6%B1%89.png",
+          "count": 12,
+          "characters": [
+            "傅肜傅佥",
+            "刘巴",
+            "向宠",
+            "向朗",
+            "吴班",
+            "张翼",
+            "李丰",
+            "杨仪",
+            "诸葛均",
+            "霍峻",
+            "高翔",
+            "黄权"
+          ]
+        },
+        {
+          "name": "荟萃-太平甲子",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/e/ef/f7dtavgnyiim8m0u3dgjm3k9phb090d.png/30px-%E8%8D%9F%E8%90%83-%E5%A4%AA%E5%B9%B3%E7%94%B2%E5%AD%90.png",
+          "count": 5,
+          "characters": [
+            "刘辟",
+            "张楚",
+            "张闿",
+            "管亥",
+            "裴元绍"
+          ]
+        },
+        {
+          "name": "荟萃-异军突起",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/a/a7/svmspupnr63p6oagzcm928mmim8vnyt.png/30px-%E8%8D%9F%E8%90%83-%E5%BC%82%E5%86%9B%E7%AA%81%E8%B5%B7.png",
+          "count": 6,
+          "characters": [
+            "SP孟获",
+            "SP祝融",
+            "公孙修",
+            "公孙度",
+            "木鹿大王",
+            "马腾"
+          ]
+        },
+        {
+          "name": "荟萃-正音雅乐",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/3/34/ijkjubrgyxa1z4l0ec4lgkheehvuz44.png/30px-%E8%8D%9F%E8%90%83-%E6%AD%A3%E9%9F%B3%E9%9B%85%E4%B9%90.png",
+          "count": 11,
+          "characters": [
+            "乐周妃",
+            "乐周瑜",
+            "乐大乔",
+            "乐小乔",
+            "乐曹植",
+            "乐祢衡",
+            "乐蔡文姬",
+            "乐蔡邕",
+            "乐诸葛果",
+            "乐貂蝉",
+            "乐邹氏"
+          ]
+        },
+        {
+          "name": "荟萃-百战虎贲",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/5/5e/g5kp37xswsbn0uc1bowkds6t5qgs0wd.png/30px-%E8%8D%9F%E8%90%83-%E7%99%BE%E6%88%98%E8%99%8E%E8%B4%B2.png",
+          "count": 22,
+          "characters": [
+            "丁奉",
+            "兀突骨",
+            "凌操",
+            "凌烈",
+            "吕据",
+            "吴兰",
+            "夏侯霸",
+            "张任",
+            "文钦",
+            "文鸯",
+            "杜预",
+            "王双",
+            "王濬",
+            "留赞",
+            "皇甫嵩",
+            "胡遵",
+            "蒋钦",
+            "陈武董袭",
+            "陈泰",
+            "陶璜",
+            "雷铜",
+            "黄祖"
+          ]
+        },
+        {
+          "name": "荟萃-奇人异士",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/d/d2/bcj48gtak7hnagfigfjecwa54bbkuuv.png/30px-%E8%8D%9F%E8%90%83-%E5%A5%87%E4%BA%BA%E5%BC%82%E5%A3%AB.png",
+          "count": 15,
+          "characters": [
+            "史阿",
+            "司马徽",
+            "吴范",
+            "周宣",
+            "张宝",
+            "张裕",
+            "朱建平",
+            "杜夔",
+            "王越",
+            "笮融",
+            "管辂",
+            "苏越",
+            "葛玄",
+            "蒲元",
+            "赵直"
+          ]
+        },
+        {
+          "name": "荟萃-计将安出",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/4/4e/gfl1vpw0rb1fnhe1l397dc52zmqew9l.png/30px-%E8%8D%9F%E8%90%83-%E8%AE%A1%E5%B0%86%E5%AE%89%E5%87%BA.png",
+          "count": 11,
+          "characters": [
+            "刘晔",
+            "刘琦",
+            "吕范",
+            "杨弘",
+            "桓范",
+            "王允",
+            "田丰",
+            "程昱",
+            "蒋干",
+            "赵昂",
+            "郤正"
+          ]
+        },
+        {
+          "name": "荟萃-豆蔻梢头",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/c/cf/jneype5xwqmxpmlpzqensvfsrclhenv.png/30px-%E8%8D%9F%E8%90%83-%E8%B1%86%E8%94%BB%E6%A2%A2%E5%A4%B4.png",
+          "count": 14,
+          "characters": [
+            "侯昭宁",
+            "崔令仪",
+            "徐妏",
+            "曹媛",
+            "柏灵筠",
+            "段巧笑",
+            "灵雎",
+            "田尚衣",
+            "芮姬",
+            "花鬘",
+            "莫琼树",
+            "薛灵芸",
+            "诸葛果",
+            "辛宪英"
+          ]
+        },
+        {
+          "name": "荟萃-皇家贵胄",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/d/d6/4ftvxvt1y7vpm4hdnql7zqfc7vnk1fg.png/30px-%E8%8D%9F%E8%90%83-%E7%9A%87%E5%AE%B6%E8%B4%B5%E8%83%84.png",
+          "count": 22,
+          "characters": [
+            "丁尚涴",
+            "全惠解",
+            "刘璿",
+            "刘虞",
+            "卞夫人",
+            "卞玥",
+            "士燮",
+            "夏侯徽",
+            "孙瑜",
+            "孙皓",
+            "孙霸",
+            "徐馨",
+            "曹芳",
+            "曹髦",
+            "朱佩兰",
+            "清河公主",
+            "环怀瑾",
+            "甘夫人",
+            "甘夫人糜夫人",
+            "糜夫人",
+            "袁姬",
+            "谢灵毓"
+          ]
+        },
+        {
+          "name": "荟萃-往者可谏",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/a/a4/88mq3ldivl0ygf8rpclcwmn1x2ii96r.png/30px-%E8%8D%9F%E8%90%83-%E5%BE%80%E8%80%85%E5%8F%AF%E8%B0%8F.png",
+          "count": 5,
+          "characters": [
+            "SP孙策",
+            "SP甄姬",
+            "SP赵云",
+            "SP马超",
+            "大乔小乔"
+          ]
+        },
+        {
+          "name": "荟萃-章台春望",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/2/22/dz346o0fjl2nx5r55ssdo2bavru93bh.png/30px-%E8%8D%9F%E8%90%83-%E7%AB%A0%E5%8F%B0%E6%98%A5%E6%9C%9B.png",
+          "count": 5,
+          "characters": [
+            "杨婉",
+            "樊玉凤",
+            "潘淑",
+            "郭照",
+            "阮瑀"
+          ]
+        },
+        {
+          "name": "荟萃-锦瑟良缘",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/d/d8/aazedy3uuez7goloselu888s63kmu3j.png/30px-%E8%8D%9F%E8%90%83-%E9%94%A6%E7%91%9F%E8%89%AF%E7%BC%98.png",
+          "count": 17,
+          "characters": [
+            "冯妤",
+            "刘懿君",
+            "孙翊",
+            "崔芷",
+            "张奋",
+            "张怀",
+            "文鸳",
+            "曹华",
+            "曹宪",
+            "曹金玉",
+            "李昭仪",
+            "来莺儿",
+            "柳婒",
+            "董絮",
+            "诸葛梦雪",
+            "诸葛若雪",
+            "邓晚棠"
+          ]
+        },
+        {
+          "name": "荟萃-笔舌如椽",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/c/c7/o2l74476g77g95c13u94g4m48gplxyx.png/30px-%E8%8D%9F%E8%90%83-%E7%AC%94%E8%88%8C%E5%A6%82%E6%A4%BD.png",
+          "count": 15,
+          "characters": [
+            "傅干",
+            "吴质",
+            "崔琰毛玠",
+            "朱铄",
+            "杨修",
+            "杨彪",
+            "桓阶",
+            "王昶",
+            "程秉",
+            "诸葛恪",
+            "钟毓",
+            "阮籍",
+            "陈琳",
+            "陈祗",
+            "骆统"
+          ]
+        },
+        {
+          "name": "荟萃-钟灵毓秀",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/d/d3/7xhrt3c18h4ejsf4w5knstama51zqc3.png/30px-%E8%8D%9F%E8%90%83-%E9%92%9F%E7%81%B5%E6%AF%93%E7%A7%80.png",
+          "count": 8,
+          "characters": [
+            "任婉",
+            "关樾",
+            "刘衿刘佩",
+            "周不疑",
+            "滕芳兰",
+            "董贵人",
+            "许靖",
+            "诸葛京"
+          ]
+        },
+        {
+          "name": "荟萃-江海同舟",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/8/84/ricg4xhr3140cds709m9u9q5o0nsd3g.png/30px-%E8%8D%9F%E8%90%83-%E6%B1%9F%E6%B5%B7%E5%90%8C%E8%88%9F.png",
+          "count": 0,
+          "characters": []
+        }
+      ]
+    },
+    {
+      "category": "其他",
+      "packs": [
+        {
+          "name": "限时地主",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/6/67/j50azbfh94v650lu5z3zovknbw1ophj.png/30px-%E9%99%90%E6%97%B6%E5%9C%B0%E4%B8%BB.png",
+          "count": 30,
+          "characters": [
+            "SP蒲元",
+            "东海龙王",
+            "刘协曹节",
+            "卫青",
+            "双璧孙策",
+            "吴懿（限时地主）",
+            "哪吒",
+            "孙悟空",
+            "寒冰剑少女",
+            "小约翰可汗",
+            "少年孙权",
+            "屈原",
+            "忍姜维",
+            "忍邓艾",
+            "无名",
+            "有诸葛亮",
+            "朱铁雄",
+            "李白",
+            "涛神",
+            "烈袁绍袁术",
+            "玉米猫",
+            "田忌",
+            "神赵云（高达一号）",
+            "经典刘备",
+            "经典孙权",
+            "经典曹操",
+            "荀彧荀攸",
+            "藤甲男孩",
+            "食岑昏",
+            "香蕉猫"
+          ]
+        },
+        {
+          "name": "喵喵杀",
+          "icon": "https://patchwiki.biligame.com/images/sgs/thumb/5/57/gt55alsdxpqv9ti95b64wcxjr5vqfkl.png/30px-%E5%96%B5%E5%96%B5%E6%9D%80.png",
+          "count": 11,
+          "characters": [
+            "体重之神",
+            "变幻之神",
+            "可爱之神",
+            "委屈之神",
+            "宫百万",
+            "抉择之神",
+            "波仔",
+            "睡眠之神",
+            "美腿之神",
+            "逆转之神",
+            "香蕉端午"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+%% ============================================================
+%% 三国杀皮肤画廊优化 — 时序图
+%% ============================================================
+
+%% ---------- 时序图1: scan-skins.js 数据合并流程 ----------
+sequenceDiagram
+    participant CLI as node scan-skins.js
+    participant Scan as scanSkins()
+    participant Meta as metadata.json
+    participant Chars as characters.json
+    participant PCM as pack_character_map.json
+    participant GF as general_factions.json
+    participant Out as skin-data.json + pack-data.json
+
+    CLI->>Scan: 启动扫描
+    Scan->>Meta: loadBwikiMetadata(SKIN_ROOT)
+    Meta-->>Scan: { "皮肤名*武将名": { story, voice_lines, audio, 所属收藏册, 画师, 上线时间, ... } }
+
+    Scan->>Chars: loadCharacters(HEROS_DIR)
+    Chars-->>Scan: { characters: [{ name, gender, faction, title, position, hall_of_fame, pack, versions.classic.skills[] }] }
+    Note over Scan: 构建 charMap: name → { skills, title, position, hallOfFame, gender, pack }
+
+    Scan->>PCM: loadPackCharacterMap(HEROS_DIR)
+    PCM-->>Scan: { pack_categories: [{ category, packs: [{ name, characters[] }] }] }
+    Note over Scan: 构建 packMap: character → { pack, category }
+
+    Scan->>GF: loadGeneralFactions(SKIN_ROOT)
+    GF-->>Scan: { "武将名": "势力" }
+    Note over Scan: 构建 factionSupplementMap (Q4: 仅作补充)
+
+    loop 遍历每个势力目录
+        loop 遍历每个图片文件
+            Scan->>Scan: parseImageFilename(file)
+            Note over Scan: 按 skinName-generalName 分组
+        end
+    end
+
+    loop 遍历每个 general
+        Scan->>Chars: charMap.get(generalName)
+        Chars-->>Scan: { skills, title, position, hallOfFame, gender }
+        Note over Scan: 合并到 general 对象
+
+        Scan->>PCM: packMap.get(generalName)
+        alt 匹配成功
+            PCM-->>Scan: { pack: "荟萃-千里单骑", category: "荟萃" }
+        else 匹配失败 (Q1决策)
+            Scan->>Scan: pack = "未知", packCategory = "其他"
+        end
+        Note over Scan: 写入 general.pack, general.packCategory
+
+        loop 遍历每个 skin
+            Scan->>Meta: lookupSkinMetadata(skinName, generalName)
+            alt 找到 metadata
+                Meta-->>Scan: { audio, 所属收藏册, 画师, 上线时间, 静态获取方式, 动态获取方式 }
+                Note over Scan: audio → voices[] 转换:<br/>{ skill, type, label, files }
+                Note over Scan: 写入 skin.collection, skin.artist,<br/>skin.releaseTime, skin.staticAcquisition,<br/>skin.dynamicAcquisition, skin.voices
+            else 未找到 metadata
+                Scan->>Scan: voices = [], 其他字段 = null
+            end
+        end
+    end
+
+    Scan->>Out: 写入 skin-data.json (扩展后的 generals[])
+    Scan->>Out: 写入 pack-data.json (categories + packs)
+    Scan-->>CLI: 扫描完成
+
+
+%% ---------- 时序图2: 前端筛选联动逻辑 ----------
+sequenceDiagram
+    participant User as 用户
+    participant App as App.jsx
+    participant FilterBar as FilterBar.jsx
+    participant Grid as SkinGrid.jsx
+    participant Detail as SkinDetail.jsx
+
+    Note over App: 数据加载 (useEffect)
+    App->>App: fetch('/skin-data.json')
+    App->>App: fetch('/pack-data.json')
+    App->>App: fetch('/gender-map.json')
+    Note over App: state: data, packData, genderMap<br/>filters: activeFaction, activePack,<br/>activePackCategory, activeCollection,<br/>activeGender, activeQuality, searchQuery
+
+    User->>FilterBar: 选择势力 "魏"
+    FilterBar->>App: onFactionChange("魏")
+    App->>App: setActiveFaction("魏")
+
+    User->>FilterBar: 展开卡包分类 "标准"
+    FilterBar->>App: onPackCategoryToggle("标准")
+    App->>App: setActivePackCategory("标准")
+
+    User->>FilterBar: 选择卡包 "标准-蜀汉虎将"
+    FilterBar->>App: onPackChange("标准-蜀汉虎将")
+    App->>App: setActivePack("标准-蜀汉虎将")
+
+    User->>FilterBar: 选择收藏册 "六出祁山"
+    FilterBar->>App: onCollectionChange("六出祁山")
+    App->>App: setActiveCollection("六出祁山")
+
+    User->>FilterBar: 输入搜索 "关羽"
+    FilterBar->>App: onSearchChange("关羽")
+    App->>App: setSearchQuery("关羽")
+
+    Note over App: useMemo: filteredGenerals (叠加筛选)
+    App->>App: 1. 势力筛选: g.faction === activeFaction
+    App->>App: 2. 卡包分类筛选: g.packCategory === activePackCategory
+    App->>App: 3. 卡包筛选: g.pack === activePack
+    App->>App: 4. 收藏册筛选: g.skins.some(s => s.collection === activeCollection)
+    App->>App: 5. 性别筛选: genderMap[g.id] === targetGender
+    App->>App: 6. 品质筛选: g.skins.some(s => s.quality === activeQuality)
+    App->>App: 7. 搜索筛选: g.name.includes(query) || g.skins.some(...)
+
+    App->>Grid: generals={filteredGenerals}
+    Note over Grid: 展开为 skin entries<br/>应用 skin 级品质/收藏册筛选<br/>按品质排序
+
+    User->>Grid: 点击皮肤卡片
+    Grid->>App: onSkinClick(general, skin)
+    App->>App: setSelectedGeneral, setSelectedSkin<br/>setViewState('detail')
+
+    App->>Detail: general, skin, onClose
+    Note over Detail: 展示: 图片 + 技能 + 台词 + 语音<br/>+ 画师 + 称号 + 上线时间 + 获取方式
+    Detail->>Detail: VoicePlayer: 播放 audio URL
+    Note over Detail: 音频直连测试<br/>若CORS失败 → 使用 /voice/ 代理
+
+    User->>Detail: 点击关闭
+    Detail->>App: onClose()
+    App->>App: setViewState('gallery')

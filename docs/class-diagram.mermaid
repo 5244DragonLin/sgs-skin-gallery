@@ -1,0 +1,213 @@
+%% ============================================================
+%% 三国杀皮肤画廊优化 — 类图
+%% ============================================================
+
+classDiagram
+    direction LR
+
+    %% ===== 数据结构 =====
+
+    class SkinDataJson {
+        +String generatedAt
+        +String sourceDir
+        +Stats stats
+        +List~General~ generals
+    }
+
+    class Stats {
+        +int totalGenerals
+        +int totalSkins
+        +Map~String,int~ factions
+    }
+
+    class General {
+        +String id
+        +String name
+        +String faction
+        +String pack
+        +String packCategory
+        +String title
+        +String position
+        +String hallOfFame
+        +String gender
+        +List~Skill~ skills
+        +List~Skin~ skins
+    }
+
+    class Skill {
+        +String name
+        +String description
+    }
+
+    class Skin {
+        +String id
+        +String name
+        +String quality
+        +String story
+        +Map~String,String~ quotes
+        +String static
+        +String large
+        +String dynamic
+        +List~Voice~ voices
+        +String collection
+        +String artist
+        +String releaseTime
+        +String staticAcquisition
+        +String dynamicAcquisition
+    }
+
+    class Voice {
+        +String skill
+        +String type
+        +String label
+        +List~String~ files
+    }
+
+    class PackDataJson {
+        +String generatedAt
+        +List~PackCategory~ categories
+    }
+
+    class PackCategory {
+        +String category
+        +String categoryIcon
+        +List~Pack~ packs
+    }
+
+    class Pack {
+        +String name
+        +String icon
+        +int count
+        +List~String~ characters
+    }
+
+    SkinDataJson "1" *-- "1" Stats
+    SkinDataJson "1" *-- "606" General
+    General "1" *-- "0..n" Skill
+    General "1" *-- "1..n" Skin
+    Skin "1" *-- "0..n" Voice
+    PackDataJson "1" *-- "10" PackCategory
+    PackCategory "1" *-- "0..n" Pack
+
+    %% ===== 前端组件 =====
+
+    class App {
+        -data: SkinDataJson
+        -packData: PackDataJson
+        -genderMap: Object
+        -viewState: String
+        -activeFaction: String
+        -activePack: String
+        -activePackCategory: String
+        -activeCollection: String
+        -activeGender: String
+        -activeQuality: String
+        -searchQuery: String
+        +filteredGenerals: List~General~
+        +visibleSkinCount: int
+        +handleSkinClick(general, skin)
+        +handleCloseDetail()
+    }
+
+    class FilterBar {
+        +activeFaction: String
+        +activePack: String
+        +activePackCategory: String
+        +activeCollection: String
+        +activeGender: String
+        +activeQuality: String
+        +searchQuery: String
+        +packData: PackDataJson
+        +collections: List~String~
+        +resultCount: int
+        +onFactionChange(faction)
+        +onPackChange(pack)
+        +onPackCategoryToggle(category)
+        +onCollectionChange(collection)
+        +onGenderChange(gender)
+        +onQualityChange(quality)
+        +onSearchChange(query)
+    }
+
+    class SkinGrid {
+        +generals: List~General~
+        +onSkinClick(general, skin)
+        +activeQuality: String
+        +activeCollection: String
+        +showFavoritesOnly: boolean
+        +flattenAndSort(): List~Entry~
+    }
+
+    class SkinCard {
+        +skin: Skin
+        +general: General
+        +onClick(general, skin)
+        +lazyLoadImage()
+    }
+
+    class SkinDetail {
+        +general: General
+        +skin: Skin
+        +onClose()
+        +isFavorite: boolean
+        +renderSkills()
+        +renderVoices()
+        +renderMetadata()
+    }
+
+    class VoicePlayer {
+        +voices: List~Voice~
+        +renderVoiceGroups()
+    }
+
+    class VoiceClip {
+        +src: String
+        +label: String
+        +index: int
+        +isPlaying: boolean
+        +handlePlay()
+    }
+
+    class Header {
+        +favCount: int
+        +showFavoritesOnly: boolean
+        +onShowFavorites()
+    }
+
+    class CollectionBadge {
+        +active: boolean
+        +onToggle()
+        +size: String
+    }
+
+    %% ===== 脚本/服务 =====
+
+    class ScanSkins {
+        +loadBwikiMetadata(skinRoot): Object
+        +loadCharacters(herosDir): Map
+        +loadPackCharacterMap(herosDir): Map
+        +loadGeneralFactions(skinRoot): Map
+        +lookupSkinMetadata(meta, skinName, generalName): Object
+        +parseImageFilename(file): ParsedFile
+        +buildCharMap(chars): Map
+        +buildPackMap(pcm): Map
+        +convertAudioToVoices(audio): List~Voice~
+        +scanSkins(): void
+    }
+
+    %% ===== 关系 =====
+
+    App "1" *-- "1" FilterBar
+    App "1" *-- "1" SkinGrid
+    App "1" *-- "0..1" SkinDetail
+    App "1" ..> "1" SkinDataJson : fetch
+    App "1" ..> "1" PackDataJson : fetch
+    FilterBar ..> PackDataJson : packData prop
+    SkinGrid "1" *-- "0..n" SkinCard
+    SkinDetail "1" *-- "1" VoicePlayer
+    VoicePlayer "1" *-- "0..n" VoiceClip
+    SkinCard ..> Skin : display
+    SkinDetail ..> General : display
+    SkinDetail ..> Skin : display
+    ScanSkins ..> SkinDataJson : generates
+    ScanSkins ..> PackDataJson : generates

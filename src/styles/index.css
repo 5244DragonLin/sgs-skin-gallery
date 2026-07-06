@@ -1,0 +1,575 @@
+/* ============================================================
+   三国杀皮肤画廊 — 古董收藏册风格
+   ============================================================ */
+
+/* —— CSS Variables —— */
+:root {
+  --color-bg: #1a120b;
+  --color-bg-light: #2c1f14;
+  --color-card: #2c1f14;
+  --color-card-hover: #3a2a1c;
+  --color-border: #8b7355;
+  --color-border-light: #a0845c;
+  --color-gold: #c9a44b;
+  --color-gold-light: #e8d5a3;
+  --color-gold-dark: #8b6914;
+  --color-red: #b33a2e;
+  --color-red-light: #d4534a;
+  --color-cream: #f5f0e8;
+  --color-text: #d4c5b2;
+  --color-text-light: #e8ddd0;
+  --color-text-muted: #8a7e6b;
+  --color-overlay: rgba(0, 0, 0, 0.85);
+
+  --faction-wei: #4a7bb5;
+  --faction-shu: #c4554a;
+  --faction-wu: #5a9e6f;
+  --faction-qun: #8a8a8a;
+  --faction-shen: #c9a44b;
+  --faction-unknown: #555555;
+
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* —— Reset & Base —— */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', 'STSong', serif;
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* —— Parchment Background Pattern —— */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    /* Parchment texture overlay */
+    radial-gradient(ellipse at 20% 50%, rgba(139, 115, 85, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(201, 164, 75, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(179, 58, 46, 0.04) 0%, transparent 50%),
+    /* Subtle paper fiber pattern */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 115, 85, 0.02) 2px,
+      rgba(139, 115, 85, 0.02) 3px
+    ),
+    var(--color-bg);
+  pointer-events: none;
+}
+
+/* —— Scrollbar Styling —— */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-light);
+}
+
+/* —— Animations —— */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-gold {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(201, 164, 75, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(201, 164, 75, 0.6);
+  }
+}
+
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.25);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.15);
+  }
+  60% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s var(--transition-smooth) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.35s var(--transition-smooth) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s var(--transition-smooth) forwards;
+}
+
+.animate-heart-beat {
+  animation: heartBeat 0.6s ease-in-out;
+}
+
+/* —— Card Styles —— */
+
+.skin-card {
+  position: relative;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(201, 164, 75, 0.1);
+}
+
+.skin-card::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(139, 115, 85, 0.3);
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.skin-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(201, 164, 75, 0.15),
+    inset 0 1px 0 rgba(201, 164, 75, 0.15);
+  border-color: var(--color-gold);
+}
+
+/* —— Lazy Loading Placeholder —— */
+.lazy-image-placeholder {
+  background: linear-gradient(
+    90deg,
+    var(--color-card) 0%,
+    rgba(139, 115, 85, 0.15) 50%,
+    var(--color-card) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* —— Golden Ornamental Divider —— */
+.ornament-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--color-gold);
+  font-size: 14px;
+}
+
+.ornament-divider::before,
+.ornament-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-gold),
+    transparent
+  );
+}
+
+/* —— Faction Tag Colors —— */
+.faction-wei {
+  background: rgba(74, 123, 181, 0.2);
+  border-color: rgba(74, 123, 181, 0.5);
+  color: #7db5e8;
+}
+
+.faction-shu {
+  background: rgba(196, 85, 74, 0.2);
+  border-color: rgba(196, 85, 74, 0.5);
+  color: #e88075;
+}
+
+.faction-wu,
+.faction-wu-red {
+  background: rgba(90, 158, 111, 0.2);
+  border-color: rgba(90, 158, 111, 0.5);
+  color: #7cc98e;
+}
+
+.faction-qun {
+  background: rgba(138, 138, 138, 0.2);
+  border-color: rgba(138, 138, 138, 0.5);
+  color: #b0b0b0;
+}
+
+.faction-shen {
+  background: rgba(201, 164, 75, 0.2);
+  border-color: rgba(201, 164, 75, 0.5);
+  color: #e8d5a3;
+}
+
+.faction-unknown {
+  background: rgba(85, 85, 85, 0.2);
+  border-color: rgba(85, 85, 85, 0.5);
+  color: #888888;
+}
+
+/* —— Detail Panel —— */
+.detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--color-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.detail-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  max-width: 960px;
+  max-height: 90vh;
+  height: 90vh;
+  background: var(--color-card);
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(201, 164, 75, 0.1);
+  animation: scaleIn 0.35s var(--transition-smooth);
+}
+
+.detail-panel::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(139, 115, 85, 0.3);
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* —— Voice Player —— */
+.voice-player-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(201, 164, 75, 0.1);
+  border: 1px solid rgba(201, 164, 75, 0.3);
+  border-radius: 6px;
+  color: var(--color-gold-light);
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.voice-player-btn:hover {
+  background: rgba(201, 164, 75, 0.2);
+  border-color: var(--color-gold);
+}
+
+.voice-player-btn.playing {
+  background: rgba(201, 164, 75, 0.25);
+  border-color: var(--color-gold);
+  animation: pulse-gold 2s ease-in-out infinite;
+}
+
+/* —— Favorite Heart —— */
+.fav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  color: var(--color-text-muted);
+  font-size: 18px;
+}
+
+.fav-btn:hover {
+  background: rgba(179, 58, 46, 0.3);
+  color: var(--color-red-light);
+}
+
+.fav-btn.active {
+  color: var(--color-red-light);
+  background: rgba(179, 58, 46, 0.2);
+}
+
+.fav-btn.active:hover {
+  color: var(--color-red);
+}
+
+/* —— Responsive —— */
+@media (max-width: 768px) {
+  .detail-panel {
+    width: 95vw;
+    max-height: 95vh;
+    border-radius: 8px;
+  }
+
+  .detail-overlay {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .skin-card {
+    border-radius: 6px;
+  }
+}
+
+/* ============================================================
+   Pack Filter (卡包筛选器)
+   ============================================================ */
+
+.pack-filter-row {
+  position: relative;
+}
+
+.pack-category-btn {
+  cursor: pointer;
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', 'STSong', serif;
+}
+
+.pack-category-btn.active {
+  background: rgba(201, 164, 75, 0.2);
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+}
+
+/* Expandable pack list container */
+.pack-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  opacity: 0;
+  padding-top: 0;
+}
+
+.pack-list.expanded {
+  max-height: 500px;
+  opacity: 1;
+}
+
+.pack-item-btn {
+  cursor: pointer;
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', 'STSong', serif;
+}
+
+.pack-item-btn.active {
+  background: rgba(201, 164, 75, 0.2);
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+}
+
+/* ============================================================
+   Collection Select (收藏册下拉)
+   ============================================================ */
+
+.collection-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9a44b' stroke-width='2'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 14px;
+  padding-right: 28px;
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', 'STSong', serif;
+}
+
+.collection-select option {
+  background: var(--color-card);
+  color: var(--color-text);
+  padding: 4px;
+}
+
+/* ============================================================
+   Skill Block (技能展示区块)
+   ============================================================ */
+
+.skill-block {
+  background: rgba(26, 18, 11, 0.5);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(201, 164, 75, 0.2);
+}
+
+.skill-name {
+  color: rgba(201, 164, 75, 0.85);
+  font-weight: 600;
+}
+
+.skill-desc {
+  color: rgba(212, 204, 184, 0.7);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.skill-quote {
+  border-left: 2px solid rgba(201, 164, 75, 0.4);
+  padding-left: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: rgba(212, 204, 184, 0.6);
+  font-style: italic;
+}
+
+/* ============================================================
+   Info Row (信息行)
+   ============================================================ */
+
+.info-row {
+  font-size: 0.75rem;
+  color: rgba(212, 204, 184, 0.5);
+}
+
+.info-label {
+  color: rgba(212, 204, 184, 0.4);
+}
+
+.info-value {
+  color: rgba(212, 204, 184, 0.7);
+}
+
+/* ============================================================
+   Quality Filter Colors (品质筛选栏颜色) — matches SkinCard QUALITY_COLORS
+   ============================================================ */
+
+.quality-yuanhua {
+  background: rgba(243, 229, 171, 0.12);
+  color: rgba(243, 229, 171, 0.85);
+  border-color: rgba(243, 229, 171, 0.35);
+}
+
+.quality-putong {
+  background: rgba(74, 222, 128, 0.12);
+  color: rgba(74, 222, 128, 0.85);
+  border-color: rgba(74, 222, 128, 0.35);
+}
+
+.quality-xiyou {
+  background: rgba(192, 132, 252, 0.12);
+  color: rgba(192, 132, 252, 0.85);
+  border-color: rgba(192, 132, 252, 0.35);
+}
+
+.quality-shishi {
+  background: rgba(251, 191, 36, 0.12);
+  color: rgba(251, 191, 36, 0.85);
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+.quality-chuanshuo {
+  background: rgba(248, 113, 113, 0.12);
+  color: rgba(248, 113, 113, 0.85);
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+.quality-xianding {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(248, 113, 113, 0.15));
+  color: rgba(253, 230, 138, 0.9);
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+.quality-jueban {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(248, 113, 113, 0.15));
+  color: rgba(253, 230, 138, 0.9);
+  border-color: rgba(251, 191, 36, 0.35);
+}

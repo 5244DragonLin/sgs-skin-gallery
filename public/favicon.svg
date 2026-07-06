@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2c1f14"/>
+      <stop offset="100%" style="stop-color:#1a120b"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8d5a3"/>
+      <stop offset="50%" style="stop-color:#c9a44b"/>
+      <stop offset="100%" style="stop-color:#8b6914"/>
+    </linearGradient>
+  </defs>
+  <!-- Background card -->
+  <rect x="4" y="4" width="56" height="56" rx="8" ry="8" fill="url(#bg)" stroke="url(#gold)" stroke-width="2"/>
+  <!-- Scroll decorations: top -->
+  <rect x="16" y="4" width="8" height="4" rx="2" fill="#c9a44b"/>
+  <rect x="40" y="4" width="8" height="4" rx="2" fill="#c9a44b"/>
+  <!-- Scroll decorations: bottom -->
+  <rect x="16" y="56" width="8" height="4" rx="2" fill="#c9a44b"/>
+  <rect x="40" y="56" width="8" height="4" rx="2" fill="#c9a44b"/>
+  <!-- "杀" character simplified -->
+  <text x="32" y="40" font-family="serif" font-size="28" font-weight="bold" fill="url(#gold)" text-anchor="middle">杀</text>
+  <!-- Small diamond accents -->
+  <polygon points="32,16 34,18 32,20 30,18" fill="#c9a44b" opacity="0.6"/>
+</svg>

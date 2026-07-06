@@ -1,0 +1,30 @@
+{
+  "name": "sgs-skin-gallery",
+  "version": "1.0.0",
+  "description": "三国杀皮肤画廊 — 基于 Vite + React 18 + Tailwind CSS，将本地皮肤素材转化为古董收藏册风格的在线画廊",
+  "type": "module",
+  "keywords": [
+    "三国杀",
+    "皮肤画廊",
+    "sgs",
+    "sanguosha",
+    "skin-gallery",
+    "react",
+    "vite"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "scan": "node scripts/scan-skins.js"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.1.0"
+  }
+}
