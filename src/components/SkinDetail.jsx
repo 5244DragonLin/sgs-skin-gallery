@@ -38,7 +38,7 @@ function SkillVoiceButton({ files, label }) {
   return (
     <button
       onClick={handleClick}
-      className={`inline-flex items-center justify-center w-5 h-5 rounded text-xs flex-shrink-0
+      className={`inline-flex items-center justify-center w-6 h-6 rounded text-xs flex-shrink-0
         transition-all duration-200
         ${playing
           ? 'bg-antique-gold/20 text-antique-gold'
@@ -46,7 +46,7 @@ function SkillVoiceButton({ files, label }) {
         }`}
       title={playing ? `停止 ${label}` : `播放 ${label}`}
     >
-      <span className="scale-[0.6] inline-block">{playing ? '🔊' : '🔈'}</span>
+      <span className="text-sm inline-block">{playing ? '🔊' : '🔈'}</span>
     </button>
   );
 }

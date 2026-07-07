@@ -40,6 +40,9 @@ export default function App() {
   const [activeCollection, setActiveCollection] = useState('all');
   const [activeHallOfFame, setActiveHallOfFame] = useState('all');
 
+  // 返回顶部按钮显隐
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
   // Favorites
   const { toggleFavorite, isFavorite } = useFavorites();
 
@@ -49,10 +52,10 @@ export default function App() {
 
     async function loadData() {
       try {
-        // Load light skins data (fast — only metadata, no stories/quotes)
-        const skinsRes = await fetch('/skin-list.json');
+        // Load skins data (public/skin-data.json，由 npm run scan 生成)
+        const skinsRes = await fetch('/skin-data.json');
         if (!skinsRes.ok) {
-          throw new Error(`skin-list.json 加载失败 (HTTP ${skinsRes.status})。请先运行: npm run scan`);
+          throw new Error(`skin-data.json 加载失败 (HTTP ${skinsRes.status})。请先运行: npm run scan`);
         }
         const skinsData = await skinsRes.json();
         if (cancelled) return;
@@ -83,12 +86,8 @@ export default function App() {
           setData(skinsData);
           setPackData(packDataResult);
           setGenderMap(genderData);
-          // Preload full skin-data.json in the background so detail view has no flicker
-          fetch('/skin-data.json').then(r => {
-            if (r.ok) return r.json();
-          }).then(full => {
-            if (full && !cancelled) setFullData(full);
-          }).catch(() => {});
+          // 初始加载已是完整 skin-data.json，直接作为详情数据，避免重复请求
+          setFullData(skinsData);
           setViewState('gallery');
         }
       } catch (err) {
@@ -101,6 +100,16 @@ export default function App() {
 
     loadData();
     return () => { cancelled = true; };
+  }, []);
+
+  // 滚动监听：下滑超过阈值时显示返回顶部按钮
+  useEffect(() => {
+    const onScroll = () => {
+      setShowBackToTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   // Build collections list from all skins (deduplicated + sorted)
@@ -360,6 +369,25 @@ export default function App() {
           isFavorite={isFavorite(selectedGeneral.id, selectedSkin.id)}
           onToggleFavorite={handleToggleFavorite}
         />
+      )}
+
+      {/* 返回顶部按钮（仅画廊视图、下滑后显示） */}
+      {showBackToTop && viewState !== 'detail' && (
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-8 right-8 z-40 w-12 h-12 rounded-full
+            bg-antique-gold/90 hover:bg-antique-gold text-stone-900
+            shadow-lg shadow-black/30 flex items-center justify-center
+            transition-all duration-300 hover:scale-110
+            active:scale-95"
+          aria-label="返回顶部"
+          title="返回顶部"
+        >
+          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor" aria-hidden="true">
+            <path d="M12 4 L20 18 L4 18 Z" />
+          </svg>
+        </button>
       )}
     </div>
   );

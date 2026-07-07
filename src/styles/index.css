@@ -501,7 +501,7 @@ body::before {
 }
 
 .skill-desc {
-  color: rgba(212, 204, 184, 0.7);
+  color: rgba(212, 204, 184, 0.85);
   font-size: 0.875rem;
   line-height: 1.6;
   white-space: pre-line;
@@ -511,8 +511,8 @@ body::before {
   border-left: 2px solid rgba(201, 164, 75, 0.4);
   padding-left: 0.5rem;
   margin-top: 0.25rem;
-  font-size: 0.8rem;
-  color: rgba(212, 204, 184, 0.6);
+  font-size: 0.85rem;
+  color: rgba(212, 204, 184, 0.85);
   font-style: italic;
 }
 

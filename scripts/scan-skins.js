@@ -29,7 +29,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 
 // ============================================================
-// Configuration — from gallery.config.yaml
+// Configuration — loaded from config.yaml (falls back to config.example.yaml)
 // ============================================================
 
 const config = loadConfig();

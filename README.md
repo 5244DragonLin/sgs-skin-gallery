@@ -2,15 +2,15 @@
 
 三国杀皮肤画廊。基于 Vite + React 18 + Tailwind CSS 构建的 Web 应用，将本地皮肤素材转化为一本具有古董收藏册质感的在线画廊，支持势力/卡包/收藏册/名将堂/性别/品质筛选、武将搜索、皮肤详情浏览、武将技能展示、语音在线播放与收藏功能。
 
-配合 [sgs_bwiki_skins](https://github.com/username/sgs_bwiki_skins) 下载素材、[sgs_bwiki_heros](https://github.com/username/sgs_bwiki_heros) 获取武将结构化数据，构建完整数据管线。
+配合 [sgs_bwiki_skins](https://github.com/5244DragonLin/sgs_bwiki_skins) 下载素材、[sgs_bwiki_heros](https://github.com/5244DragonLin/sgs_bwiki_heros) 获取武将结构化数据，构建完整数据管线。
 
 ## 📸 项目预览
 
-![屏幕截图 2026-07-07 000737](./screenshots/屏幕截图 2026-07-07 000737.png)
+![屏幕截图 2026-07-07 000737](./assets/屏幕截图 2026-07-07 000737.png)
 
-![屏幕截图 2026-07-07 000902](./screenshots/屏幕截图 2026-07-07 000902.png)
+![屏幕截图 2026-07-07 000902](./assets/屏幕截图 2026-07-07 000902.png)
 
-![屏幕截图 2026-07-07 000911](./screenshots/屏幕截图 2026-07-07 000911.png)
+![屏幕截图 2026-07-07 000911](./assets/屏幕截图 2026-07-07 000911.png)
 
 ## 为什么需要这个工具？
 
@@ -37,14 +37,14 @@
 - **本地收藏夹**：心形收藏按钮，localStorage 持久化，支持筛选"已收藏"
 - **图片懒加载**：IntersectionObserver + 200px 预加载阈值，1800 张图不卡首屏
 - **响应式布局**：桌面 6 列 → 平板 4 列 → 手机 2 列，自适应网格
-- **YAML 配置**：通过 `gallery.config.yaml` 统一配置素材路径、武将数据和端口
+- **YAML 配置**：通过 `config.example.yaml` 统一配置素材路径、武将数据和端口
 - **增量更新友好**：素材目录变更后只需 `npm run scan` 重新生成数据，无需改代码
 
 ## 🚀 快速开始
 
 ### 前置条件
 
-需要先运行 [sgs_bwiki_skins](https://github.com/username/sgs_bwiki_skins) 下载皮肤素材至指定目录，确保素材目录符合以下结构：
+需要先运行 [sgs_bwiki_skins](https://github.com/5244DragonLin/sgs_bwiki_skins) 下载皮肤素材至指定目录，确保素材目录符合以下结构：
 
 ```
 BWIKI/
@@ -78,10 +78,10 @@ npm install
 
 ### 3. 配置素材目录
 
-编辑 `gallery.config.yaml`，修改 `skinDir` 指向你的 BWIKI 素材目录：
+编辑 `config.example.yaml`，修改 `skinDir` 指向你的 BWIKI 素材目录：
 
 ```yaml
-# gallery.config.yaml
+# config.example.yaml
 skinDir: D:/BaiduSyncdisk/其他/三国杀皮肤/BWIKI  # 改成你的路径
 port: 3000
 ```
@@ -114,7 +114,7 @@ node scripts/scan-skins.js [--skin-dir <path>] [--output <path>]
 
 | 参数 | 说明 | 默认值 |
 |------|------|--------|
-| `--skin-dir <path>` | 皮肤素材目录路径 | 读 `gallery.config.yaml` |
+| `--skin-dir <path>` | 皮肤素材目录路径 | 读 `config.example.yaml` |
 | `--output <path>` | 输出 JSON 文件路径 | `public/skin-data.json` |
 
 ### 示例
@@ -134,7 +134,7 @@ node scripts/scan-skins.js --output "public/custom-data.json"
 
 ```
 sgs-skin-gallery/
-├── gallery.config.yaml           # YAML 配置文件（皮肤路径/端口等）
+├── config.example.yaml           # YAML 配置文件（皮肤路径/端口等）
 ├── index.html                    # 入口 HTML（Tailwind CDN + Noto Serif SC）
 ├── package.json                  # Vite + React 18
 ├── vite.config.js                # 从 YAML 读取配置 + 自定义 /skins/ 代理中间件
@@ -168,10 +168,10 @@ sgs-skin-gallery/
 
 | 配置项 | 位置 | 说明 | 默认值 |
 |--------|------|------|--------|
-| `skinDir` | `gallery.config.yaml` | 皮肤素材根目录路径 | `D:/BaiduSyncdisk/其他/三国杀皮肤/BWIKI` |
-| `herosDir` | `gallery.config.yaml` | 武将结构化数据目录 | `E:/sgs_bwiki_heros/output` |
-| `port` | `gallery.config.yaml` | 开发服务器端口 | `3000` |
-| `outputDir` | `gallery.config.yaml` | 扫描结果输出目录 | `public` |
+| `skinDir` | `config.example.yaml` | 皮肤素材根目录路径 | `D:/BaiduSyncdisk/其他/三国杀皮肤/BWIKI` |
+| `herosDir` | `config.example.yaml` | 武将结构化数据目录 | `E:/sgs_bwiki_heros/output` |
+| `port` | `config.example.yaml` | 开发服务器端口 | `3000` |
+| `outputDir` | `config.example.yaml` | 扫描结果输出目录 | `public` |
 | `gender-map.json` | `public/gender-map.json` | 武将性别映射表 | 约 270 条预置数据 |
 | Tailwind 主题色 | `index.html` 内 `<script>` | 古董风格配色 | 深棕/暗金/朱红/象牙白 |
 
@@ -227,19 +227,26 @@ PNG、JPG、JPEG、GIF、WebP。动态皮肤建议使用 GIF。
 
 ## 📋 更新日志
 
+### v0.3
+
+- **新增：**首页返回顶部按钮，滚动超过一屏后右下角浮现，点击平滑回顶；详情弹窗打开时自动隐藏，避免遮挡
+- **新增：**大屏响应式增强，屏幕宽度 ≥1536px 时画廊网格从 6 列升至 7 列，筛选栏宽度随屏宽同步展开，内容区设 1760px 上限留出左右边距
+- **优化：**详情页技能台词可读性，台词/语音文字不透明度（0.6→0.85）与字号（0.8rem→0.85rem）上调，语音按钮喇叭图标放大（约翻倍）
+- **修复：**首页数据加载失败，前端主加载由不存在的 `skin-list.json` 改为实际产出的 `skin-data.json`（扫描脚本仅生成后者），消除「`<!DOCTYPE`」JSON 解析报错
+
 ### v0.2
 
-- **YAML 配置**：新增 `gallery.config.yaml` 统一管理皮肤路径、武将数据路径和端口，替代硬编码
-- **名将堂筛选**：新增名将堂独立筛选行，全部按钮+下拉列表模式，支持25种名将堂分类
-- **动态登场独立标识**：BWIKI 动态登场动画与常规动态 GIF 分离，卡片上用 ◈ 菱形指示器区分
-- **语音按钮嵌入台词**：技能台词左侧添加小喇叭播放按钮，点击即播对应技能语音，无需跳转语音列表
-- **收藏册交互升级**：改为全部按钮+下拉列表模式，精简6行显示，点击外部自动收起
-- **蜀红吴绿配色**：蜀势力红（#c4554a）、吴势力绿（#5a9e6f），符合传统文化认知
-- **品质色块统一配色**：品质徽章统一配色方案——普通绿/稀有紫/史诗金/传说红/限定金红渐变
-- **品质筛选按钮同步配色**：选中态颜色匹配对应品质色块
-- **大图图标简化**：🖼 → L，更简洁的视觉提示
-- **详情面板布局优化**：去除右侧面板 maxHeight 限制，自适应高度，消除双滚动条和闪烁问题
-- 优化已知 Bug 和提升性能
+- **新增：**YAML 配置，新增 `config.example.yaml` 统一管理皮肤路径、武将数据路径和端口，替代硬编码
+- **新增：**名将堂独立筛选行，全部按钮+下拉列表模式，支持 25 种名将堂分类
+- **新增：**动态登场独立标识，BWIKI 动态登场动画与常规动态 GIF 分离，卡片用 ◈ 菱形指示器区分
+- **新增：**技能台词左侧语音按钮，点击即播对应技能语音，无需跳转语音列表
+- **新增：**收藏册交互升级，改为全部按钮+下拉列表模式，精简 6 行显示，点击外部自动收起
+- **新增：**蜀红吴绿配色（蜀红 #c4554a、吴绿 #5a9e6f），符合传统文化认知
+- **新增：**品质色块统一配色方案（普通绿/稀有紫/史诗金/传说红/限定金红渐变）
+- **新增：**品质筛选按钮选中态同步品质色块配色
+- **优化：**大图图标简化，🖼 改为 L，更简洁的视觉提示
+- **优化：**详情面板布局，去除右侧面板 maxHeight 限制，自适应高度，消除双滚动条和闪烁
+- **优化：**若干已知 Bug 修复与性能提升
 
 ### v0.1
 
@@ -247,18 +254,14 @@ PNG、JPG、JPEG、GIF、WebP。动态皮肤建议使用 GIF。
 
 ## 🔗 关联项目
 
-- [**sgs_bwiki_skins**](https://github.com/username/sgs_bwiki_skins) — 从 BWIKI 下载皮肤图片和元数据，本项目的主数据源
-  - https://github.com/5244DragonLin/sgs_bwiki_skins
-  - https://gitee.com/yhl5244/sgs_bwiki_skins
+- [**sgs_bwiki_skins**](https://github.com/5244DragonLin/sgs_bwiki_skins) — 从 BWIKI 下载皮肤图片和元数据，本项目的主数据源
+  - GitHub：https://github.com/5244DragonLin/sgs_bwiki_skins
+  - Gitee：https://gitee.com/yhl5244/sgs_bwiki_skins
 
-- [**sgs_bwiki_heros**](https://github.com/username/sgs_bwiki_heros) — 从 BWIKI 爬取武将结构化数据（技能/卡包/称号/定位等），本项目的武将信息数据源
-  - https://github.com/5244DragonLin/sgs_bwiki_heros
-  - https://gitee.com/yhl5244/sys_bwiki_heros
+- [**sgs_bwiki_heros**](https://github.com/5244DragonLin/sgs_bwiki_heros) — 从 BWIKI 爬取武将结构化数据（技能/卡包/称号/定位等），本项目的武将信息数据源
+  - GitHub：https://github.com/5244DragonLin/sgs_bwiki_heros
+  - Gitee：https://gitee.com/yhl5244/sys_bwiki_heros
 
-
-## ⚠️ 免责声明
-
-本项目中所有皮肤素材、武将数据、故事文字及台词等版权均归杭州游卡网络技术有限公司（三国杀）及相关创作者所有。本工具仅供学习交流使用，不得用于任何商业用途或侵犯第三方权益的行为。因使用本工具产生的一切后果由使用者自行承担，作者不承担任何法律责任。
 
 ## ☕ 捐赠
 
@@ -267,6 +270,10 @@ PNG、JPG、JPEG、GIF、WebP。动态皮肤建议使用 GIF。
 | 支付宝 | 微信 |
 |--------|------|
 | ![支付宝](./assets/donate_alipay.jpg) | ![微信](./assets/donate_wechat.jpg) |
+
+## ⚠️ 免责声明
+
+本项目中所有皮肤素材、武将数据、故事文字及台词等版权均归杭州游卡网络技术有限公司（三国杀）及相关创作者所有。本工具仅供学习交流使用，不得用于任何商业用途或侵犯第三方权益的行为。因使用本工具产生的一切后果由使用者自行承担，作者不承担任何法律责任。
 
 ## 📃 许可证
 

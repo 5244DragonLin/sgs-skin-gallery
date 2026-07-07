@@ -9,15 +9,17 @@ import { load as yamlLoad } from 'js-yaml';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname);
-const CONFIG_PATH = path.join(PROJECT_ROOT, 'gallery.config.yaml');
+const CONFIG_PATH = path.join(PROJECT_ROOT, 'config.yaml');
+const EXAMPLE_CONFIG_PATH = path.join(PROJECT_ROOT, 'config.example.yaml');
 
 /**
- * 读取 gallery.config.yaml
+ * 读取 config.yaml（读不到自动回退 config.example.yaml）
  */
 function loadConfig() {
-  if (!fs.existsSync(CONFIG_PATH)) return {};
+  const cfgPath = fs.existsSync(CONFIG_PATH) ? CONFIG_PATH : EXAMPLE_CONFIG_PATH;
+  if (!fs.existsSync(cfgPath)) return {};
   try {
-    return yamlLoad(fs.readFileSync(CONFIG_PATH, 'utf-8')) || {};
+    return yamlLoad(fs.readFileSync(cfgPath, 'utf-8')) || {};
   } catch {
     return {};
   }

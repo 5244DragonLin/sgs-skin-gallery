@@ -102,7 +102,7 @@ export default function FilterBar({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 mb-6">
+    <div className="max-w-[1600px] 2xl:max-w-[1760px] mx-auto px-4 md:px-8 mb-6">
       <div className="bg-antique-card/80 border border-antique-border/40 rounded-lg p-4 md:p-5">
         {/* Search Row */}
         <div className="mb-4">

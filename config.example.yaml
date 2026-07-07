@@ -2,7 +2,7 @@
 # 修改后重启 npm run dev 即可生效
 
 # 皮肤素材目录（BWIKI 数据源）
-skinDir: 'D:/BaiduSyncdisk/其他/三国杀皮肤/BWIKI'
+skinDir: ''
 
 # 武将数据目录（可选，不配置则自动检测）
 herosDir: null
