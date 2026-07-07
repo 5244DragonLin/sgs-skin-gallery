@@ -6,11 +6,11 @@
 
 ## 📸 项目预览
 
-![屏幕截图 2026-07-07 000737](https://gitee.com/yhl5244/images/raw/master/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-07-07%20000737.png)
+![屏幕截图 2026-07-07 000737](./screenshots/屏幕截图 2026-07-07 000737.png)
 
-![屏幕截图 2026-07-07 000902](https://gitee.com/yhl5244/images/raw/master/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-07-07%20000902.png)
+![屏幕截图 2026-07-07 000902](./screenshots/屏幕截图 2026-07-07 000902.png)
 
-![屏幕截图 2026-07-07 000911](https://gitee.com/yhl5244/images/raw/master/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-07-07%20000911.png)
+![屏幕截图 2026-07-07 000911](./screenshots/屏幕截图 2026-07-07 000911.png)
 
 ## 为什么需要这个工具？
 
@@ -266,7 +266,7 @@ PNG、JPG、JPEG、GIF、WebP。动态皮肤建议使用 GIF。
 
 | 支付宝 | 微信 |
 |--------|------|
-| ![支付宝](https://gitee.com/yhl5244/images/raw/master/donate_alipay.jpg) | ![微信](https://gitee.com/yhl5244/images/raw/master/donate_wechat.jpg) |
+| ![支付宝](./assets/donate_alipay.jpg) | ![微信](./assets/donate_wechat.jpg) |
 
 ## 📃 许可证
 
