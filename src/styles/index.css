@@ -342,33 +342,6 @@ body::before {
   z-index: 1;
 }
 
-/* —— Voice Player —— */
-.voice-player-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: rgba(201, 164, 75, 0.1);
-  border: 1px solid rgba(201, 164, 75, 0.3);
-  border-radius: 6px;
-  color: var(--color-gold-light);
-  cursor: pointer;
-  transition: all var(--transition-smooth);
-  font-family: inherit;
-  font-size: 14px;
-}
-
-.voice-player-btn:hover {
-  background: rgba(201, 164, 75, 0.2);
-  border-color: var(--color-gold);
-}
-
-.voice-player-btn.playing {
-  background: rgba(201, 164, 75, 0.25);
-  border-color: var(--color-gold);
-  animation: pulse-gold 2s ease-in-out infinite;
-}
-
 /* —— Favorite Heart —— */
 .fav-btn {
   display: flex;

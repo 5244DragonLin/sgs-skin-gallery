@@ -73,9 +73,15 @@ function loadBwikiMetadata(skinRoot) {
   }
   try {
     const content = fs.readFileSync(metaPath, 'utf-8');
-    const data = JSON.parse(content);
-    console.log(`  📖 已加载 metadata.json: ${Object.keys(data).length} 条皮肤元数据`);
-    return data;
+    const parsed = JSON.parse(content);
+    // 兼容新旧格式：新格式 { meta, data:[...] }，旧格式裸 dict
+    const list = Array.isArray(parsed)
+      ? parsed
+      : Array.isArray(parsed?.data)
+        ? parsed.data
+        : Object.entries(parsed).map(([k, v]) => ({ key: k, ...v }));
+    console.log(`  📖 已加载 metadata.json: ${list.length} 条皮肤元数据`);
+    return list;
   } catch (err) {
     console.warn(`  ⚠ metadata.json 解析失败: ${err.message}`);
     return null;
@@ -86,19 +92,30 @@ function loadBwikiMetadata(skinRoot) {
  * Look up metadata for a skin using BWIKI key format.
  * BWIKI keys use * as separator: "皮肤名*武将名"
  */
-function lookupSkinMetadata(bwikiMeta, skinName, generalName) {
+export function lookupSkinMetadata(bwikiMeta, skinName, generalName) {
   if (!bwikiMeta) return null;
+
+  // 新格式为数组时，先按 武将名*皮肤名 建立索引
+  let map = bwikiMeta;
+  if (Array.isArray(bwikiMeta)) {
+    map = {};
+    for (const e of bwikiMeta) {
+      const gn = e.武将名 || (e.key ? String(e.key).split('*')[1] : '');
+      const sn = e.皮肤名 || (e.key ? String(e.key).split('*')[0] : '');
+      map[`${gn}*${sn}`] = e;
+    }
+  }
 
   // Try exact *-separated key first
   const starKey = `${skinName}*${generalName}`;
-  if (bwikiMeta[starKey]) return bwikiMeta[starKey];
+  if (map[starKey]) return map[starKey];
 
   // Try reverse order (some entries might have general*skin)
   const reverseKey = `${generalName}*${skinName}`;
-  if (bwikiMeta[reverseKey]) return bwikiMeta[reverseKey];
+  if (map[reverseKey]) return map[reverseKey];
 
   // Try fuzzy match: search all keys for a match
-  for (const [key, value] of Object.entries(bwikiMeta)) {
+  for (const [key, value] of Object.entries(map)) {
     const parts = key.split('*');
     if (parts.length === 2) {
       if (
@@ -118,13 +135,39 @@ function lookupSkinMetadata(bwikiMeta, skinName, generalName) {
 // ============================================================
 
 /**
+ * Build a skill-versions map for a character from versions.classic /
+ * breakthrough / national_war. Returns null when every version lacks both
+ * skills and lines (so callers can skip rendering the version switcher).
+ *
+ * @param {Object} char - Character object with `.versions`
+ * @returns {Object|null} { classic, breakthrough, national_war } or null
+ */
+export function buildSkillVersions(char) {
+  const result = {};
+  let hasAny = false;
+  for (const ver of ['经典', '界限突破', '国战']) {
+    const versionData = char.版本 ? char.版本[ver] : undefined;
+    const skills = Array.isArray(versionData?.技能) ? versionData.技能 : [];
+    const lines =
+      versionData && versionData.武将台词 && typeof versionData.武将台词 === 'object'
+        ? versionData.武将台词
+        : {};
+    if (skills.length > 0 || Object.keys(lines).length > 0) {
+      result[ver] = { skills, lines };
+      hasAny = true;
+    }
+  }
+  return hasAny ? result : null;
+}
+
+/**
  * Load characters.json from the heros directory.
  * Builds a Map<name, {skills, title, position, hallOfFame, gender, pack}>.
  *
  * @param {string} herosDir - Path to the heros directory
  * @returns {Map<string, Object>} Character info map keyed by name
  */
-function loadCharacters(herosDir) {
+export function loadCharacters(herosDir) {
   const charPath = path.join(herosDir, 'characters.json');
   if (!fs.existsSync(charPath)) {
     console.warn(`  ⚠ characters.json 未找到于 ${herosDir}，武将技能等信息将不可用`);
@@ -133,20 +176,23 @@ function loadCharacters(herosDir) {
   try {
     const content = fs.readFileSync(charPath, 'utf-8');
     const data = JSON.parse(content);
-    const characters = data.characters || [];
+    // 兼容新旧格式：新格式 { meta, data:[...] }，旧格式 { meta, characters:[...] }
+    const characters = data.data || data.characters || [];
     console.log(`  📋 已加载 characters.json: ${characters.length} 个武将`);
 
     const charMap = new Map();
     for (const char of characters) {
-      // Extract skills from versions.classic.skills (array of {name, description})
-      const skills = char.versions?.classic?.skills || [];
-      charMap.set(char.name, {
+      // Extract skills from 版本.经典.技能 (array of {name, description})
+      const skills = char.版本?.经典?.技能 || [];
+      const skillVersions = buildSkillVersions(char);
+      charMap.set(char.姓名, {
         skills: skills,
-        title: char.title || '',
-        position: char.position || '',
-        hallOfFame: char.hall_of_fame || '',
-        gender: char.gender || '',
-        pack: char.pack || '',
+        skillVersions: skillVersions,
+        title: char.称号 || '',
+        position: char.定位 || '',
+        hallOfFame: char.名将堂 || '',
+        gender: char.性别 || '',
+        pack: char.武将包 || '',
       });
     }
     return charMap;
@@ -234,7 +280,7 @@ function loadGeneralFactions(skinRoot) {
  * @param {Object} audio - Audio data from metadata
  * @returns {Array} Array of voice group objects
  */
-function convertAudioToVoices(audio) {
+export function convertAudioToVoices(audio) {
   if (!audio || typeof audio !== 'object') return [];
 
   const voices = [];
@@ -262,7 +308,7 @@ function convertAudioToVoices(audio) {
  * @param {string} packName - Full pack name
  * @returns {string} Category name
  */
-function extractPackCategory(packName) {
+export function extractPackCategory(packName) {
   if (!packName) return '其他';
   const dashIndex = packName.indexOf('-');
   if (dashIndex === -1) return '其他';
@@ -275,7 +321,7 @@ function extractPackCategory(packName) {
  * @param {Object} pcmData - Raw pack_character_map.json data
  * @returns {Object} Structured pack data for the gallery
  */
-function buildPackData(pcmData) {
+export function buildPackData(pcmData) {
   if (!pcmData || !pcmData.pack_categories) {
     return {
       generatedAt: new Date().toISOString(),
@@ -323,7 +369,7 @@ function buildPackData(pcmData) {
  * Parse a skin image filename into components.
  * Pattern: {skinName}-{generalName}-{type}.{ext}
  */
-function parseImageFilename(filename) {
+export function parseImageFilename(filename) {
   const basename = path.basename(filename);
 
   const extMatch = basename.match(/\.(png|gif|jpg|jpeg|webp)$/i);
@@ -508,22 +554,22 @@ function scanSkins() {
         // Look up metadata from BWIKI metadata.json
         const meta = lookupSkinMetadata(bwikiMeta, skinData.skinName, skinData.generalName);
 
-        // Convert BWIKI voice_lines to the expected quotes format
+        // Convert BWIKI 皮肤台词 to the expected quotes format
         let quotes = null;
-        if (meta && meta.voice_lines) {
+        if (meta && meta.皮肤台词) {
           quotes = {};
-          for (const [skill, lines] of Object.entries(meta.voice_lines)) {
+          for (const [skill, lines] of Object.entries(meta.皮肤台词)) {
             quotes[skill] = lines.join('\n');
           }
         }
 
         // Convert audio to voices format (replaces the empty array)
-        const voices = meta && meta.audio ? convertAudioToVoices(meta.audio) : [];
+        const voices = meta && meta.语音地址 ? convertAudioToVoices(meta.语音地址) : [];
 
         // Extract additional metadata fields
-        const collection = meta ? (meta['所属收藏册'] || null) : null;
+        const collection = meta ? (meta['收藏册'] || null) : null;
         const artist = meta ? (meta['画师'] || null) : null;
-        const releaseTime = meta ? (meta['上线时间'] || null) : null;
+        const releaseTime = meta ? (meta['皮肤上线时间'] || null) : null;
         const staticAcquisition = meta ? (meta['静态获取方式'] || null) : null;
         const dynamicAcquisition = meta ? (meta['动态获取方式'] || null) : null;
 
@@ -538,8 +584,8 @@ function scanSkins() {
         skinList.push({
           id: skinData.skinName,
           name: skinData.skinName,
-          quality: meta && meta.quality ? decodeHtmlEntities(meta.quality).replace('限定&至臻', '限定') : null,
-          story: meta ? safeStr(meta.story) : null,
+          quality: meta && meta.品质 ? decodeHtmlEntities(meta.品质).replace('限定&至臻', '限定') : null,
+          story: meta ? safeStr(meta.皮肤故事) : null,
           quotes: quotes,
           static: skinData.static,
           large: skinData.large,
@@ -571,6 +617,7 @@ function scanSkins() {
         faction: faction,
         skins: skinList,
         skills: charInfo.skills || [],
+        skillVersions: charInfo.skillVersions || null,
         title: charInfo.title || '',
         position: charInfo.position || '',
         hallOfFame: charInfo.hallOfFame || '',
@@ -621,4 +668,11 @@ function scanSkins() {
   console.log('✨ 扫描完成！');
 }
 
-scanSkins();
+// Only auto-run the scan when this module is executed directly
+// (e.g. `node scripts/scan-skins.js`). When imported (e.g. by tests) we expose
+// the pure helpers without triggering a full filesystem scan.
+const __isMain =
+  process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (__isMain) {
+  scanSkins();
+}

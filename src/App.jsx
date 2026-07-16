@@ -250,6 +250,19 @@ export default function App() {
     setSelectedSkin(null);
   }, []);
 
+  // 在同一武将的皮肤列表内切换上一个/下一个（环形，绝不跨武将）
+  const handleNavigateSkin = useCallback((direction) => {
+    if (!selectedGeneral || !selectedSkin) return;
+    const skins = selectedGeneral.skins || [];
+    if (skins.length <= 1) return;
+    const idx = skins.findIndex((s) => s.id === selectedSkin.id);
+    if (idx === -1) return;
+    const nextIdx = direction === 'prev'
+      ? (idx - 1 + skins.length) % skins.length
+      : (idx + 1) % skins.length;
+    setSelectedSkin(skins[nextIdx]);
+  }, [selectedGeneral, selectedSkin]);
+
   const handleToggleFavorite = useCallback((generalId, skinId) => {
     toggleFavorite(generalId, skinId);
   }, [toggleFavorite]);
@@ -366,6 +379,7 @@ export default function App() {
           skin={selectedSkin}
           fullData={fullData}
           onClose={handleCloseDetail}
+          onNavigateSkin={handleNavigateSkin}
           isFavorite={isFavorite(selectedGeneral.id, selectedSkin.id)}
           onToggleFavorite={handleToggleFavorite}
         />

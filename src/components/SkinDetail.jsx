@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import CollectionBadge from './CollectionBadge';
+import { claimPlayback, releasePlayback } from '../audioController';
 
 /**
  * SkillVoiceButton — small play button next to a skill name.
@@ -9,19 +10,31 @@ function SkillVoiceButton({ files, label }) {
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef(null);
 
+  // 组件卸载时停掉自己的音频，避免关弹窗后还在响
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        releasePlayback(audioRef.current);
+      }
+    };
+  }, []);
+
   const handleClick = useCallback((e) => {
     e.stopPropagation();
+
+    const file = files[0];
+    if (!file) return;
+
     if (playing) {
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
       }
       setPlaying(false);
+      if (audioRef.current) releasePlayback(audioRef.current);
       return;
     }
-
-    const file = files[0];
-    if (!file) return;
 
     const src = file.startsWith('http://') || file.startsWith('https://')
       ? file
@@ -29,8 +42,18 @@ function SkillVoiceButton({ files, label }) {
 
     const audio = new Audio(src);
     audioRef.current = audio;
-    audio.addEventListener('ended', () => setPlaying(false));
+    const stopSelf = () => {
+      audio.pause();
+      audio.currentTime = 0;
+      setPlaying(false);
+    };
+    audio.addEventListener('ended', () => {
+      setPlaying(false);
+      releasePlayback(audio);
+    });
     audio.addEventListener('error', () => setPlaying(false));
+    // 先让全局正在响的那段停下来，再播自己
+    claimPlayback(audio, stopSelf);
     audio.play().catch(() => setPlaying(false));
     setPlaying(true);
   }, [files, playing]);
@@ -102,11 +125,18 @@ export default function SkinDetail({
   skin,
   fullData,
   onClose,
+  onNavigateSkin = () => {},
   isFavorite,
   onToggleFavorite,
 }) {
   const [activeTab, setActiveTab] = useState('large'); // 'large' | 'static' | 'dynamic'
   const [fullscreenImage, setFullscreenImage] = useState(null);
+  const [skillVersion, setSkillVersion] = useState('经典'); // '经典' | '界限突破' | '国战'
+
+  // 当前武将皮肤列表与序号（仅在该列表内翻页，绝不切换到别的武将）
+  const generalSkins = general.skins || [];
+  const currentSkinIndex = generalSkins.findIndex((s) => s.id === skin.id);
+  const canNavigateSkin = generalSkins.length > 1 && currentSkinIndex !== -1;
 
   // Close on Escape
   useEffect(() => {
@@ -122,6 +152,12 @@ export default function SkinDetail({
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
   }, [onClose, fullscreenImage]);
+
+  // 切换武将或皮肤时：重置技能版本开关 + 图片页签（避免新皮肤缺该页签类型时显示空图）
+  useEffect(() => {
+    setSkillVersion('经典');
+    setActiveTab('large');
+  }, [general.id, skin.id]);
 
   // Lock body scroll — use scrollbar-gutter to prevent layout shift
   useEffect(() => {
@@ -141,6 +177,12 @@ export default function SkinDetail({
   const handleOverlayClick = useCallback((e) => {
     if (e.target === e.currentTarget) onClose();
   }, [onClose]);
+
+  // Skill+quote version labels/order for the detail-panel version switcher.
+  // Data source: characters.json `versions` (classic / breakthrough / national_war).
+  // 与数据管线统一约定对齐：skillVersions 的键为中文「经典/界限突破/国战」
+  const VERSION_LABELS = { 经典: '经典', 界限突破: '界限突破', 国战: '国战' };
+  const VERSION_ORDER = ['经典', '界限突破', '国战'];
 
   // Merge full data when it arrives — stable merge to avoid layout jumps
   const enriched = useMemo(() => {
@@ -173,17 +215,74 @@ export default function SkinDetail({
   const factionBorder = FACTION_BORDER[detailGeneral.faction] || FACTION_BORDER['未知'];
   const factionLabel = FACTION_LABEL[detailGeneral.faction] || FACTION_LABEL['未知'];
 
-  // Count tabs
-  const tabs = [];
-  if (detailSkin.large) tabs.push({ id: 'large', label: '大图' });
-  if (detailSkin.static) tabs.push({ id: 'static', label: '静态' });
-  if (detailSkin.dynamic) tabs.push({ id: 'dynamic', label: '动态 GIF' });
-  if (detailSkin.dynamicEntrance) tabs.push({ id: 'entrance', label: '动态登场' });
+  // 当前皮肤可选的形式（大图 / 静态 / 动态 / 动态登场）
+  const tabs = useMemo(() => {
+    const t = [];
+    if (detailSkin.large) t.push({ id: 'large', label: '大图' });
+    if (detailSkin.static) t.push({ id: 'static', label: '静态' });
+    if (detailSkin.dynamic) t.push({ id: 'dynamic', label: '动态 GIF' });
+    if (detailSkin.dynamicEntrance) t.push({ id: 'entrance', label: '动态登场' });
+    return t;
+  }, [detailSkin.large, detailSkin.static, detailSkin.dynamic, detailSkin.dynamicEntrance]);
 
-  // General skills (from character data)
-  const generalSkills = detailGeneral.skills || [];
+  // 键盘操作（放在 tabs 定义之后，避免 TDZ）：
+  //  ↑ / ↓ → 在同一武将的不同皮肤间切换（不切到别的武将）
+  //  ← / → → 切换同一皮肤的不同形式（大图 / 静态 / 动态…）
+  //  全屏看图时不响应任何方向键，先按 Esc 退出大图
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (fullscreenImage) return;
+      if (e.key === 'ArrowUp') {
+        if (!canNavigateSkin) return;
+        e.preventDefault();
+        onNavigateSkin('prev');
+      } else if (e.key === 'ArrowDown') {
+        if (!canNavigateSkin) return;
+        e.preventDefault();
+        onNavigateSkin('next');
+      } else if (e.key === 'ArrowLeft') {
+        if (tabs.length <= 1) return;
+        e.preventDefault();
+        const idx = tabs.findIndex((t) => t.id === activeTab);
+        const next = (idx - 1 + tabs.length) % tabs.length;
+        setActiveTab(tabs[next].id);
+      } else if (e.key === 'ArrowRight') {
+        if (tabs.length <= 1) return;
+        e.preventDefault();
+        const idx = tabs.findIndex((t) => t.id === activeTab);
+        const next = (idx + 1) % tabs.length;
+        setActiveTab(tabs[next].id);
+      }
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [onNavigateSkin, fullscreenImage, canNavigateSkin, activeTab, tabs, setActiveTab]);
+
   // Skin quotes (from metadata)
   const skinQuotes = detailSkin.quotes || {};
+
+  // ---- Skill version switching (classic / breakthrough / national_war) ----
+  // Pull skill+quote data from characters.json `versions` so the detail panel
+  // can switch between the classic / breakthrough / national_war skill sets.
+  const skillVersionData = detailGeneral.skillVersions || null;
+  const availableVersions = skillVersionData
+    ? VERSION_ORDER.filter(
+        (v) =>
+          skillVersionData[v] &&
+          ((skillVersionData[v].skills && skillVersionData[v].skills.length) ||
+            (skillVersionData[v].lines && Object.keys(skillVersionData[v].lines).length))
+      )
+    : [];
+  const activeVer = skillVersionData && skillVersionData[skillVersion] ? skillVersion : '经典';
+  const vData = skillVersionData ? (skillVersionData[activeVer] || { skills: [], lines: {} }) : null;
+  const activeSkills = vData ? (vData.skills || []) : (detailGeneral.skills || []);
+  const versionLines = vData ? (vData.lines || {}) : {};
+  const normalizeQuote = (raw) => {
+    if (raw == null) return null;
+    if (Array.isArray(raw)) return raw.join('\n').split('/').join('\n');
+    return String(raw);
+  };
+  const generalSkills = activeSkills;
 
   // Determine if general has skills to display
   const hasSkills = generalSkills.length > 0;
@@ -209,34 +308,30 @@ export default function SkinDetail({
         <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
           {/* Left: Image Display */}
           <div className="md:w-3/5 relative bg-antique-bg flex items-center justify-center min-h-[300px] md:min-h-0">
-            <div
-              className="relative w-full h-full flex items-center justify-center cursor-zoom-in group"
-              onClick={() => setFullscreenImage(displayImage)}
-              title="点击查看大图"
-            >
-              {displayImage ? (
+            {displayImage ? (
+              <>
                 <img
                   src={`/skins/${displayImage}`}
                   alt={`${detailSkin.name} - ${detailGeneral.name}`}
-                  className="max-w-full max-h-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.02]"
+                  onClick={() => setFullscreenImage(displayImage)}
+                  title="点击查看大图"
+                  className="peer max-w-full max-h-full object-contain p-4 cursor-zoom-in transition-transform duration-300 hover:scale-[1.02]"
                 />
-              ) : (
-                <div className="text-antique-muted/40 text-center p-8">
-                  <div className="text-6xl mb-2">🖼</div>
-                  <p>暂无图片</p>
-                </div>
-              )}
-              {/* Zoom hint overlay */}
-              {displayImage && (
-                <div className="absolute bottom-4 right-4 bg-black/50 rounded-full p-2
-                  opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Zoom hint overlay — only shows when hovering the image itself */}
+                <div className="absolute bottom-4 right-4 z-10 bg-black/50 rounded-full p-2
+                  opacity-0 peer-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                   <svg className="w-5 h-5 text-antique-cream" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                   </svg>
                 </div>
-              )}
-            </div>
+              </>
+            ) : (
+              <div className="text-antique-muted/40 text-center p-8">
+                <div className="text-6xl mb-2">🖼</div>
+                <p>暂无图片</p>
+              </div>
+            )}
 
             {/* Faction gradient overlay */}
             <div className={`absolute inset-0 bg-gradient-to-b ${factionGradient} to-transparent pointer-events-none`} />
@@ -261,6 +356,22 @@ export default function SkinDetail({
                   </button>
                 ))}
               </div>
+            )}
+
+            {/* 同武将皮肤切换：计数角标 + 提示文案（↑/↓ 切皮肤，←/→ 切形式，仅在该武将皮肤内） */}
+            {canNavigateSkin && (
+              <>
+                <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 px-2.5 py-0.5 rounded-full
+                  bg-black/40 border border-antique-border/40 text-antique-cream/80 text-xs font-classical
+                  pointer-events-none">
+                  {currentSkinIndex + 1} / {generalSkins.length}
+                </div>
+                <div className="absolute bottom-3 left-3 z-10 text-antique-cream/50 text-[11px] leading-relaxed pointer-events-none">
+                  ↑ ↓ 切换皮肤
+                  <br />
+                  ← → 切换形式
+                </div>
+              </>
             )}
           </div>
 
@@ -331,60 +442,99 @@ export default function SkinDetail({
               <span>◆</span>
             </div>
 
-            {/* General Skills Block (P0-2) */}
-            {hasSkills && (
+            {/* General Skills Block (P0-2) — with skill+quote version switching */}
+            {(skillVersionData || hasSkills) && (
               <div className="mb-4">
-                <h4 className="text-antique-gold text-sm font-semibold mb-2 tracking-wide">⚔ 武将技能</h4>
-                <div className="space-y-2">
-                  {generalSkills.map((skill, idx) => {
-                    // Find matching quote for this skill
-                    const quote = skinQuotes[skill.name] || null;
-                    const quoteLines = quote ? quote.split('\n').filter(Boolean) : [];
-                    // Find matching voice group for this skill
-                    const voiceMatch = detailSkin.voices
-                      ? detailSkin.voices.find(v => v.skill === skill.name)
-                      : null;
-                    return (
-                      <div key={idx} className="skill-block">
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <span className="skill-name text-sm">{skill.name}</span>
-                        </div>
-                        <div className="skill-desc">{skill.description}</div>
-                        {quoteLines.length > 0 && (
-                          <div className="space-y-0.5 mt-0.5">
-                            {quoteLines.map((line, li) => (
-                              <div key={li} className="skill-quote flex items-start gap-1.5">
-                                {voiceMatch && voiceMatch.files && voiceMatch.files.length > 0 && (
-                                  <SkillVoiceButton files={voiceMatch.files} label={line} />
-                                )}
-                                <span>「{line}」</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                <div className="flex items-center justify-between gap-3 mb-2">
+                  <h4 className="text-antique-gold text-sm font-semibold tracking-wide">⚔ 武将技能</h4>
+                  {availableVersions.length > 1 && (
+                    <div className="flex gap-1.5">
+                      {availableVersions.map((v) => (
+                        <button
+                          key={v}
+                          onClick={() => setSkillVersion(v)}
+                          className={`
+                            px-3 py-1 rounded-full text-xs font-classical
+                            border transition-all duration-300
+                            ${activeVer === v
+                              ? 'bg-antique-gold/30 border-antique-gold/60 text-antique-gold'
+                              : 'bg-black/30 border-white/10 text-antique-muted hover:border-antique-gold/30'
+                            }
+                          `}
+                        >
+                          {VERSION_LABELS[v]}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                {/* Show dead quote separately if exists */}
-                {skinQuotes['阵亡'] && (
-                  <div className="skill-block mt-2">
-                    <div className="skill-name text-sm mb-0.5">💀 阵亡</div>
-                    {skinQuotes['阵亡'].split('\n').filter(Boolean).map((line, li) => {
-                      const deathVoice = detailSkin.voices
-                        ? detailSkin.voices.find(v => v.skill === '阵亡')
+
+                {generalSkills.length > 0 ? (
+                  <div className="space-y-2">
+                    {generalSkills.map((skill, idx) => {
+                      // Find matching quote for this skill (version lines take priority)
+                      const rawQuote = versionLines[skill.name] != null
+                        ? versionLines[skill.name]
+                        : (skinQuotes[skill.name] || null);
+                      const quote = normalizeQuote(rawQuote);
+                      const quoteLines = quote ? quote.split('\n').filter(Boolean) : [];
+                      // Find matching voice group for this skill
+                      const voiceMatch = detailSkin.voices
+                        ? detailSkin.voices.find(vg => vg.skill === skill.name)
                         : null;
                       return (
+                        <div key={idx} className="skill-block">
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <span className="skill-name text-sm">{skill.name}</span>
+                          </div>
+                          <div className="skill-desc">{skill.description}</div>
+                          {quoteLines.length > 0 && (
+                            <div className="space-y-0.5 mt-0.5">
+                              {quoteLines.map((line, li) => (
+                                <div key={li} className="skill-quote flex items-start gap-1.5">
+                                  {voiceMatch && voiceMatch.files && voiceMatch.files.length > 0 && (
+                                    <SkillVoiceButton files={voiceMatch.files} label={line} />
+                                  )}
+                                  <span>「{line}」</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  skillVersionData && (
+                    <p className="text-antique-muted/50 text-sm">该版本暂无技能数据</p>
+                  )
+                )}
+
+                {/* Show dead quote separately if exists (version lines take priority) */}
+                {(() => {
+                  const rawDeath = versionLines['阵亡'] != null
+                    ? versionLines['阵亡']
+                    : (skinQuotes['阵亡'] || null);
+                  const deathQuote = normalizeQuote(rawDeath);
+                  const deathLines = deathQuote ? deathQuote.split('\n').filter(Boolean) : [];
+                  if (deathLines.length === 0) return null;
+                  const deathVoice = detailSkin.voices
+                    ? detailSkin.voices.find(vg => vg.skill === '阵亡')
+                    : null;
+                  return (
+                    <div className="skill-block mt-2">
+                      <div className="skill-name text-sm mb-0.5">💀 阵亡</div>
+                      {deathLines.map((line, li) => (
                         <div key={li} className="skill-quote flex items-start gap-1.5">
                           {deathVoice && deathVoice.files && deathVoice.files.length > 0 && (
                             <SkillVoiceButton files={deathVoice.files} label={line} />
                           )}
                           <span>「{line}」</span>
                         </div>
-                      );
-                    })}
-                  </div>
-                )}
+                      ))}
+                    </div>
+                  );
+                })()}
               </div>
             )}
 
@@ -424,7 +574,7 @@ export default function SkinDetail({
             )}
 
             {/* Quotes (legacy display — only show if no skills block) */}
-            {detailSkin.quotes && Object.keys(detailSkin.quotes).length > 0 && !hasSkills && (
+            {detailSkin.quotes && Object.keys(detailSkin.quotes).length > 0 && !hasSkills && !skillVersionData && (
               <div className="mb-4">
                 <h4 className="text-antique-gold text-sm font-semibold mb-2 tracking-wide">💬 皮肤台词</h4>
                 <div className="space-y-2">

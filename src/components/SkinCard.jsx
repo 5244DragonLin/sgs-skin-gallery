@@ -94,8 +94,8 @@ export default React.memo(function SkinCard({
   // Hall of Fame indicator
   const hasHallOfFame = general.hallOfFame && general.hallOfFame !== '不在内' && general.hallOfFame !== '';
 
-  // Pack category label — only show if exists and not "其他"
-  const showPackCategory = general.packCategory && general.packCategory !== '其他' && general.packCategory !== '';
+  // 卡包标签 — 显示完整卡包名（如「限定-隐山之玉」），仅在存在且非「其他」时显示
+  const showPack = general.pack && general.pack !== '其他' && general.pack !== '';
 
   return (
     <div
@@ -206,10 +206,10 @@ export default React.memo(function SkinCard({
           </span>
         </div>
 
-        {/* Pack category tag */}
-        {showPackCategory && (
+        {/* 卡包标签（完整卡包名） */}
+        {showPack && (
           <div className="mt-1 text-[10px] text-antique-gold/60 font-classical truncate">
-            {general.packCategory}
+            {general.pack}
           </div>
         )}
       </div>

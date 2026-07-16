@@ -54,18 +54,43 @@ export default function FilterBar({
   const [expandedCategory, setExpandedCategory] = useState(null);
   const [inputValue, setInputValue] = useState(searchQuery);
   const debounceRef = useRef(null);
+  const isComposingRef = useRef(false); // 是否正在用输入法打拼音（尚未选字落下）
 
   // Sync external searchQuery changes (e.g. clear) back to local input
   useEffect(() => {
     setInputValue(searchQuery);
   }, [searchQuery]);
 
-  const handleSearchInput = useCallback((value) => {
-    setInputValue(value);
+  // 触发搜索（带 300ms 防抖）：拼音组合中选字前不会走到这里
+  const commitSearch = useCallback((value) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       onSearchChange(value);
     }, 300);
+  }, [onSearchChange]);
+
+  // 输入框内容变化：正在用输入法打拼音（尚未选字落下）时只更新显示，不触发筛选刷新
+  const handleSearchChange = useCallback((e) => {
+    const value = e.target.value;
+    setInputValue(value);
+    if (isComposingRef.current || e.nativeEvent.isComposing) return;
+    commitSearch(value);
+  }, [commitSearch]);
+
+  // 拼音选字落下（组合结束）后，才正式发起搜索
+  const handleCompositionEnd = useCallback((e) => {
+    isComposingRef.current = false;
+    const value = e.target.value;
+    setInputValue(value);
+    commitSearch(value);
+  }, [commitSearch]);
+
+  // 清空搜索
+  const handleClearSearch = useCallback(() => {
+    setInputValue('');
+    isComposingRef.current = false;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    onSearchChange('');
   }, [onSearchChange]);
 
   // Cleanup debounce timer on unmount
@@ -110,7 +135,9 @@ export default function FilterBar({
             <input
               type="text"
               value={inputValue}
-              onChange={(e) => handleSearchInput(e.target.value)}
+              onChange={handleSearchChange}
+              onCompositionStart={() => { isComposingRef.current = true; }}
+              onCompositionEnd={handleCompositionEnd}
               placeholder="搜索武将名..."
               className="w-full md:w-72 px-4 py-2.5 pl-10 bg-antique-bg border border-antique-border/50
                 rounded-lg text-antique-text placeholder-antique-muted
@@ -126,7 +153,7 @@ export default function FilterBar({
             </svg>
             {inputValue && (
               <button
-                onClick={() => handleSearchInput('')}
+                onClick={handleClearSearch}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-antique-muted
                   hover:text-antique-gold transition-colors"
               >
